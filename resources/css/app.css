@@ -1,0 +1,13 @@
+@import 'bootstrap/dist/css/bootstrap.css';
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', serif;
+}
+
+html,
+body {
+    background: #f7f7f7;
+    height: 100%;
+}
