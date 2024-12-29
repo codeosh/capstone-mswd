@@ -39,6 +39,7 @@ $(document).ready(function () {
         }
     });
 
+    // For Family Composition Function
     $('#addRow').click(function (e) {
         e.preventDefault();
         const tableBody = document.getElementById('familyCompositionTable');
@@ -68,6 +69,29 @@ $(document).ready(function () {
             showToast('At least one row must remain.', 'danger');
         }
     });
+
+    function toggleInput(checkboxSelector, inputSelector) {
+        $(checkboxSelector).on('change', function () {
+            if ($(this).is(':checked')) {
+                $(inputSelector).filter(':text').prop('disabled', true).val('');
+            } else {
+                $(inputSelector).filter(':text').prop('disabled', false);
+            }
+        });
+
+        $(inputSelector)
+            .filter(':text')
+            .on('input', function () {
+                if ($(this).val().trim() !== '') {
+                    $(checkboxSelector).prop('disabled', true);
+                } else {
+                    $(checkboxSelector).prop('disabled', false);
+                }
+            });
+    }
+
+    toggleInput('#other_firstUnknown', 'input[name="other_firstAbuse"]');
+    toggleInput('#most_unknown', 'input[name="other_recentIncident"]');
 
     $('#intakeForm').on('submit', function (e) {
         e.preventDefault();

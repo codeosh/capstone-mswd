@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Page;
 
 use App\Http\Controllers\Controller;
 use App\Models\Beneficiary;
-use App\Models\FamilyComposition;
-use DateTime;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CaseController extends Controller
@@ -335,7 +332,13 @@ class CaseController extends Controller
             'neglect_complaint.*' => 'nullable|string',
             'neglect_other' => 'nullable|string|max:255',
             // Third Section
-            ''
+            'incident_from' => 'nullable|string|max:255',
+            'date_recentIncident' => 'nullable|date',
+            'time_recentIncident' => 'nullable|date_format:H:i',
+            'other_recentIncident' => 'nullable|string|max:255',
+            'date_firstAbuse' => 'nullable|date',
+            'time_firstAbuse' => 'nullable|date_format:H:i',
+            'other_firstAbuse' => 'nullable|string|max:255',
         ]);
         try {
             DB::beginTransaction();
@@ -365,6 +368,16 @@ class CaseController extends Controller
                 'social_worker' => ucwords(strtolower($validatedData['socialworker'])),
                 'historian' => ucwords(strtolower($validatedData['historian'])),
                 'other_observer' => $otherObservers ? json_encode($otherObservers) : null,
+            ]);
+
+            $interviewForms->incidents()->create([
+                'info_from' => $validatedData['incident_from'],
+                'date_recent_incident' => $validatedData['date_recentIncident'] ?? null,
+                'time_recent_incident' => $validatedData['time_recentIncident'] ?? null,
+                'other_recent_clues' => $validatedData['other_recentIncident'],
+                'date_first_abuse' => $validatedData['date_firstAbuse'] ?? null,
+                'time_first_abuse' => $validatedData['time_firstAbuse'] ?? null,
+                'other_first_abuse' => $validatedData['other_firstAbuse'],
             ]);
 
             $relationFieldMapping = [
@@ -424,6 +437,9 @@ class CaseController extends Controller
                     ]);
                 }
             }
+
+
+
 
             DB::commit();
             return response()->json(['success' => true, 'message' => 'Interview case added successfully!']);

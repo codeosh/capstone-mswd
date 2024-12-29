@@ -459,15 +459,14 @@
                         <div class="d-flex align-items-center justify-content-around gap-2">
                             <div class="form-check">
                                 <input class="form-check-input radio_checkbox" data-group="group1" type="checkbox"
-                                    id="Information-from-Historian" name="incident_from[]"
+                                    id="Information-from-Historian" name="incident_from"
                                     value="Information from Historian">
                                 <label class="form-check-label" for="Information-from-Historian">Information from
                                     Historian</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input radio_checkbox" data-group="group1" type="checkbox"
-                                    id="No-Information-Available" name="incident_from[]"
-                                    value="No Information Available">
+                                    id="No-Information-Available" name="incident_from" value="No Information Available">
                                 <label class="form-check-label" for="No-Information-Available">No Information
                                     Available</label>
                             </div>
@@ -477,24 +476,24 @@
                             <div class="col-md-7">
                                 <label class="form-label fw-bold">Date of Most Recent
                                     Incident:</label>
-                                <input class="form-control" type="date" name="date_recentIncident" placeholder="Date">
+                                <input class="form-control" type="date" name="date_recentIncident">
                             </div>
 
                             <div class="col-md-5">
                                 <label class="form-label fw-bold">Time:</label>
-                                <input class="form-control" type="time" name="time_recentIncident" placeholder="Time">
+                                <input class="form-control" type="time" name="time_recentIncident">
                             </div>
 
                             <div class="col-md-12 d-flex align-items-center gap-3 mt-3">
                                 <div class="d-flex flex-column flex-grow-1">
                                     <label class="form-label fw-bold">Other Chronological
                                         Clues:</label>
-                                    <input type="text" name="other_recentIncident[]" class="form-control">
+                                    <input type="text" name="other_recentIncident" class="form-control">
                                 </div>
 
                                 <div class="form-check d-flex align-items-center" style="margin-top: 32px;">
                                     <input type="checkbox" class="form-check-input me-2" id="most_unknown"
-                                        name="other_recentIncident[]" value="Unknown" style="margin-top: 0;">
+                                        name="other_recentIncident" value="Unknown" style="margin-top: 0;">
                                     <label for="most_unknown" class="form-check-label">Unknown</label>
                                 </div>
                             </div>
@@ -504,7 +503,7 @@
                             <div class="col-md-7">
                                 <label class="form-label fw-bold">Date of First Abusive
                                     Incident:</label>
-                                <input class="form-control" type="date" name="date_firstAbuse" placeholder="Date">
+                                <input class="form-control" type="date" name="date_firstAbuse">
                             </div>
 
                             <div class="col-md-5">
@@ -516,12 +515,12 @@
                                 <div class="d-flex flex-column flex-grow-1">
                                     <label class="form-label fw-bold">Other Chronological
                                         Clues:</label>
-                                    <input type="text" name="other_firstAbuse[]" class="form-control">
+                                    <input type="text" name="other_firstAbuse" class="form-control">
                                 </div>
 
                                 <div class="form-check d-flex align-items-center" style="margin-top: 32px;">
                                     <input type="checkbox" class="form-check-input me-2" id="other_firstUnknown"
-                                        name="other_firstAbuse[]" value="Unknown" style="margin-top: 0;">
+                                        name="other_firstAbuse" value="Unknown" style="margin-top: 0;">
                                     <label for="other_firstUnknown" class="form-check-label">Unknown</label>
                                 </div>
                             </div>
