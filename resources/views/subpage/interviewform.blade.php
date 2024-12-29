@@ -565,28 +565,28 @@
                             <label class="form-check-label">Estimated duration of Abuse: </label>
                             <div class="d-flex align-items-center gap-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="1-7Days" name="duration_abuse[]"
-                                        value="1-7 days">
+                                    <input class="form-check-input radio_checkbox" data-group="group2" type="checkbox"
+                                        id="1-7Days" name="duration_abuse" value="1-7 days">
                                     <label class="form-check-label" for="1-7Days">1-7 days</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="2months" name="duration_abuse[]"
-                                        value="1 wk - 2 months">
-                                    <label class="form-check-label" for="2months">1 wk - 2 months</label>
+                                    <input class="form-check-input radio_checkbox" data-group="group2" type="checkbox"
+                                        id="2months" name="duration_abuse" value="1 wk - 2 months">
+                                    <label class="form-check-label radio_checkbox" for="2months">1 wk - 2 months</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="6months" name="duration_abuse[]"
-                                        value="2 - 6 months">
+                                    <input class="form-check-input radio_checkbox" data-group="group2" type="checkbox"
+                                        id="6months" name="duration_abuse" value="2 - 6 months">
                                     <label class="form-check-label" for="6months">2 - 6 months</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="over6months"
-                                        name="duration_abuse[]" value="2 - 6 months">
+                                    <input class="form-check-input radio_checkbox" data-group="group2" type="checkbox"
+                                        id="over6months" name="duration_abuse" value="2 - 6 months">
                                     <label class="form-check-label" for="over6months">> 6 months</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="durationAbuse"
-                                        name="duration_abuse[]" value="Unknown">
+                                    <input class="form-check-input radio_checkbox" data-group="group2" type="checkbox"
+                                        id="durationAbuse" name="duration_abuse" value="Unknown">
                                     <label class="form-check-label" for="durationAbuse">Unknown</label>
                                 </div>
                             </div>
@@ -595,22 +595,17 @@
                         <div class="row">
                             <div class="col d-flex align-items-center  justify-content-end gap-2">
                                 <label for="interview_Witnessed">Witnessed?</label>
-                                <input class="form-check-input radio_checkbox" data-group="YesorNo" type="checkbox"
-                                    id="interview_WitnessedYes" name="other_witnessed[]" value="Yes">
+                                <input class="form-check-input radio_checkbox" data-group="group3" type="checkbox"
+                                    id="interview_WitnessedYes" name="other_witnessed" value="Yes">
                                 <label class="form-check-label" for="interview_WitnessedYes">Yes</label>
-                                <input class="form-check-input radio_checkbox" data-group="YesorNo" type="checkbox"
-                                    id="interview_WitnessedNo" name="other_witnessed[]" value="No">
+                                <input class="form-check-input radio_checkbox" data-group="group3" type="checkbox"
+                                    id="interview_WitnessedNo" name="other_witnessed" value="No">
                                 <label class="form-check-label" for="interview_WitnessedNo">No</label>
                             </div>
                         </div>
                         <div class="col mb-3 mt-3">
                             <div class="row-md-3 d-flex align-items-center gap-2 flex-wrap">
                                 <label class="form-label fw-bold">Site of Abuse:</label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="interview_siteofAbuseknown"
-                                        name="site_abuse[]" value="Known">
-                                    <label class="form-check-label mb-0" for="interview_siteofAbuseknown">Known</label>
-                                </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="interview_siteofAbuseUnknown"
                                         name="site_abuse[]" value="Unknown">

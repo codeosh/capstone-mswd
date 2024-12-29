@@ -339,6 +339,14 @@ class CaseController extends Controller
             'date_firstAbuse' => 'nullable|date',
             'time_firstAbuse' => 'nullable|date_format:H:i',
             'other_firstAbuse' => 'nullable|string|max:255',
+            'other_incidentDetails' => 'nullable|array',
+            'other_incidentDetails.*' => 'nullable|string',
+            'duration_abuse' => 'nullable|string|max:255',
+            'other_witnessed' => 'nullable|string|max:255',
+            'site_abuse' => 'nullable|array',
+            'site_abuse.*' => 'nullable|string',
+            'incident_witness' => 'nullable|string|max:255',
+            'incident_relationChild' => 'nullable|string|max:255',
         ]);
         try {
             DB::beginTransaction();
@@ -399,6 +407,10 @@ class CaseController extends Controller
                 'neglectComplaint' => [
                     'neglect_complaint' => 'neglect_complaint',
                 ],
+                'otherIncidents' => [
+                    'other_incidentDetails' => 'other_incident',
+                    'site_abuse' => 'site_abuse',
+                ],
             ];
             foreach ($relationFieldMapping as $relation => $fieldMapping) {
                 foreach ($fieldMapping as $checkboxField => $fieldColumn) {
@@ -429,17 +441,37 @@ class CaseController extends Controller
                     'field' => 'neglect_other',
                     'column' => 'neglect_other',
                 ],
+                'otherIncidents' => [
+                    ['field' => 'duration_abuse', 'column' => 'duration_abuse'],
+                    ['field' => 'other_witnessed', 'column' => 'witnessed'],
+                    ['field' => 'incident_witness', 'column' => 'witness', 'transform' => true],
+                    ['field' => 'incident_relationChild', 'column' => 'relation_child'],
+                ],
             ];
-            foreach ($textFieldMapping as $relation => $mapping) {
-                if (!empty($validatedData[$mapping['field']])) {
-                    $interviewForms->{$relation}()->create([
-                        $mapping['column'] => $validatedData[$mapping['field']],
-                    ]);
+
+            foreach ($textFieldMapping as $relation => $mappings) {
+                if ($relation === 'otherIncidents') {
+                    foreach ($mappings as $mapping) {
+                        if (!empty($validatedData[$mapping['field']])) {
+                            $value = $validatedData[$mapping['field']];
+
+                            if (isset($mapping['transform']) && $mapping['transform']) {
+                                $value = ucwords(strtolower($value));
+                            }
+
+                            $interviewForms->{$relation}()->create([
+                                $mapping['column'] => $value,
+                            ]);
+                        }
+                    }
+                } else {
+                    if (!empty($validatedData[$mappings['field']])) {
+                        $interviewForms->{$relation}()->create([
+                            $mappings['column'] => $validatedData[$mappings['field']],
+                        ]);
+                    }
                 }
             }
-
-
-
 
             DB::commit();
             return response()->json(['success' => true, 'message' => 'Interview case added successfully!']);

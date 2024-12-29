@@ -93,6 +93,37 @@ $(document).ready(function () {
     toggleInput('#other_firstUnknown', 'input[name="other_firstAbuse"]');
     toggleInput('#most_unknown', 'input[name="other_recentIncident"]');
 
+    // Other Incidents Functions
+    $('#interview_siteofAbuseUnknown').change(function () {
+        if ($(this).prop('checked')) {
+            $(
+                '#interview_siteofAbuseChildHome, #interview_siteofAbuseSchool, #interview_siteofAbusePerpetrators, #interview_siteofAbusePublicplace'
+            ).prop('disabled', true);
+        } else {
+            $(
+                '#interview_siteofAbuseChildHome, #interview_siteofAbuseSchool, #interview_siteofAbusePerpetrators, #interview_siteofAbusePublicplace'
+            ).prop('disabled', false);
+        }
+    });
+    $(
+        '#interview_siteofAbuseChildHome, #interview_siteofAbuseSchool, #interview_siteofAbusePerpetrators, #interview_siteofAbusePublicplace'
+    ).change(function () {
+        if ($(this).prop('checked')) {
+            $('#interview_siteofAbuseUnknown').prop('disabled', true);
+        } else {
+            if (
+                $('#interview_siteofAbuseChildHome').prop('checked') ===
+                    false &&
+                $('#interview_siteofAbuseSchool').prop('checked') === false &&
+                $('#interview_siteofAbusePerpetrators').prop('checked') ===
+                    false &&
+                $('#interview_siteofAbusePublicplace').prop('checked') === false
+            ) {
+                $('#interview_siteofAbuseUnknown').prop('disabled', false);
+            }
+        }
+    });
+
     $('#intakeForm').on('submit', function (e) {
         e.preventDefault();
 
