@@ -14,7 +14,7 @@
                 <div class="input-group">
                     <!-- Dropdown -->
                     <div class="form-floating">
-                        <select id="serviceTypeSelect" name="selectedServiceType" class="form-select">
+                        <select id="selectServiceReport" name="reportService" class="form-select">
                             <option value="">Select Service Type</option>
                             <option value="AICS">AICS</option>
                             <option value="VAW">VAW</option>
@@ -22,7 +22,7 @@
                             <option value="CAR">CAR</option>
                             <option value="CICL">CICL</option>
                         </select>
-                        <label for="serviceTypeSelect">Service Type</label>
+                        <label for="selectServiceReport">Service Type</label>
                     </div>
 
                     <!-- Start Date -->
@@ -41,7 +41,7 @@
 
                     <!-- Button -->
                     <div class="input-group-text">
-                        <button type="button" id="filterButton" class="btn btn-primary">Filter</button>
+                        <button type="button" id="filterButtonReport" class="btn btn-primary">Filter</button>
                     </div>
                 </div>
             </div>

@@ -232,9 +232,17 @@ $(document).ready(function () {
 
     // Handle filter button click
     $('#filterButton').on('click', function () {
-        const serviceType = $('#serviceTypeSelect').val();
+        const serviceType = $('#selectServiceType').val();
+        console.log('Service Type:', serviceType);
+
+        if (!serviceType) {
+            showToast('Please select a Service Type', 'danger');
+            return;
+        }
+
         const startDate = $('#serviceStartDate').val();
         const endDate = $('#serviceEndDate').val();
+
         filterServices(serviceType, startDate, endDate);
     });
 
@@ -252,6 +260,9 @@ $(document).ready(function () {
             );
             return;
         }
+
+        // Log the data being sent
+        console.log('Sending data:', { serviceType, startDate, endDate });
 
         $.ajax({
             url: `/Beneficiaries/${beneficiaryId}/filtered-services`,

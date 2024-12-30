@@ -196,6 +196,9 @@ class BeneficiaryController extends Controller
 
         $query = $beneficiary->services();
 
+        // Log request data to check the filters
+        Log::info('Filter Params:', $request->all());
+
         if ($request->filled('serviceType')) {
             $query->where('service_name', $request->input('serviceType'));
         }
@@ -215,7 +218,6 @@ class BeneficiaryController extends Controller
             'data' => ['services' => $services]
         ]);
     }
-
 
     public function update(Request $request, $id)
     {
