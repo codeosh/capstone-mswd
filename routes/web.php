@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Page\BeneficiaryController;
 use App\Http\Controllers\Page\CaseController;
+use App\Http\Controllers\Page\GenerateReport;
 use App\Http\Controllers\Page\ServiceController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +39,5 @@ Route::middleware(['role:personnel'])->group(function () {
     Route::get('/Page/Beneficiary/CaseManagement', [CaseController::class, 'index'])->name('casemanage.page');
     Route::get('/Sub-page/Beneficiary/Intake-Form', [CaseController::class, 'intakeform'])->name('intake.form');
     Route::get('/Sub-page/Beneficiary/Interview-Form', [CaseController::class, 'interviewform'])->name('interview.form');
+    Route::get('/Page/Beneficiary/Generate-Reports', [GenerateReport::class, 'index'])->name('generate.report');
 });

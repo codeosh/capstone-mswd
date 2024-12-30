@@ -24,6 +24,8 @@
                                     <option value="AICS">AICS</option>
                                     <option value="VAW">VAW</option>
                                     <option value="VAC">VAC</option>
+                                    <option value="CAR">CAR</option>
+                                    <option value="CICL">CICL</option>
                                 </select>
                                 <label for="serviceTypeSelect">Service Type</label>
                             </div>

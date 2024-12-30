@@ -92,7 +92,7 @@
                 <a href="#" class="navbar-item">
                     <i class="fa-solid fa-bullhorn me-2"></i> <span class="navbar-text">Announcement</span>
                 </a>
-                <a href="#" class="navbar-item">
+                <a href="{{route('generate.report')}}" class="navbar-item">
                     <i class="fa-solid fa-chart-line me-2"></i> <span class="navbar-text">Reports</span>
                 </a>
             </div>

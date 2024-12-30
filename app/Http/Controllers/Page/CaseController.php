@@ -450,7 +450,7 @@ class CaseController extends Controller
             ];
 
             foreach ($textFieldMapping as $relation => $mappings) {
-                if ($relation === 'otherIncidents') {
+                if ($relation) {
                     foreach ($mappings as $mapping) {
                         if (!empty($validatedData[$mapping['field']])) {
                             $value = $validatedData[$mapping['field']];
