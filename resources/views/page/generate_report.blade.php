@@ -9,32 +9,32 @@
     </div>
     <div class="card-body">
         <div class="row mb-3">
-            <div class="col-md-8">
-                <label for="filterInputs" class="form-label">Filter Services</label>
+            <div class="col-md-6">
                 <div class="input-group">
                     <!-- Dropdown -->
                     <div class="form-floating">
-                        <select id="selectServiceReport" name="reportService" class="form-select">
-                            <option value="">Select Service Type</option>
+                        <select id="selectReportFilterType" name="reportFilterType" class="form-select">
+                            <option value="">Select Filter Type</option>
                             <option value="AICS">AICS</option>
                             <option value="VAW">VAW</option>
                             <option value="VAC">VAC</option>
                             <option value="CAR">CAR</option>
                             <option value="CICL">CICL</option>
+                            <option value="Solo Parent">Solo Parent</option>
                         </select>
-                        <label for="selectServiceReport">Service Type</label>
+                        <label for="selectReportFilterType">Filter Type</label>
                     </div>
 
                     <!-- Start Date -->
                     <div class="form-floating">
-                        <input type="date" id="serviceStartDate" name="startDate" class="form-control"
+                        <input type="date" id="filterReportStartDate" name="startDate" class="form-control"
                             placeholder="Start Date" aria-label="Start Date" />
                         <label for="serviceStartDate">Start Date</label>
                     </div>
 
                     <!-- End Date -->
                     <div class="form-floating">
-                        <input type="date" id="serviceEndDate" name="endDate" class="form-control"
+                        <input type="date" id="filterReportEndDate" name="endDate" class="form-control"
                             placeholder="End Date" aria-label="End Date" />
                         <label for="serviceEndDate">End Date</label>
                     </div>
@@ -49,4 +49,5 @@
         @include('partials.report_table', ['beneficiaries' => $beneficiaries])
     </div>
 </div>
+<div id="toast-container" class="position-fixed top-0 end-0 p-3" style="z-index: 9999;"></div>
 @endsection

@@ -1,3 +1,4 @@
+{{-- resources\views\partials\report_table.blade.php --}}
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
@@ -11,7 +12,7 @@
             <th class="text-center">Status</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="reportTableContainer">
         @forelse ($beneficiaries as $beneficiary)
         <tr>
             <td>{{ $loop->iteration }}</td>

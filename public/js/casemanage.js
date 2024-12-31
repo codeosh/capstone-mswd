@@ -226,4 +226,85 @@ $(document).ready(function () {
 
     $('#birthdate').on('change', calculateAge);
     calculateAge();
+
+    $('#filterButtonReport').on('click', function () {
+        const serviceType = $('#selectReportFilterType').val();
+        const startDate = $('#filterReportStartDate').val();
+        const endDate = $('#filterReportEndDate').val();
+
+        if (!serviceType) {
+            showToast('Please select a Filter Type', 'danger');
+            return;
+        }
+
+        filterBeneficiaries(serviceType, startDate, endDate);
+    });
+
+    function filterBeneficiaries(serviceType, startDate, endDate) {
+        const tableBody = $('.reportTableContainer');
+        tableBody.html(
+            '<tr><td colspan="9" class="text-center">Loading...</td></tr>'
+        );
+
+        $.ajax({
+            url: '/generate-report/filter',
+            type: 'GET',
+            data: { reportFilterType: serviceType, startDate, endDate },
+            success: function (response) {
+                if (response.success && response.data.length > 0) {
+                    populateBeneficiaryTable(response.data);
+                } else {
+                    tableBody.html(
+                        '<tr><td colspan="9" class="text-center">No beneficiaries found.</td></tr>'
+                    );
+                }
+            },
+            error: function () {
+                tableBody.html(
+                    '<tr><td colspan="9" class="text-center text-danger">An error occurred while fetching data.</td></tr>'
+                );
+            },
+        });
+    }
+
+    function populateBeneficiaryTable(beneficiaries) {
+        const tableBody = $('.reportTableContainer');
+        const rows = beneficiaries
+            .map((beneficiary, index) => {
+                const birthDate = new Date(beneficiary.birthdate);
+                const age = new Date().getFullYear() - birthDate.getFullYear();
+                const services =
+                    beneficiary.services.length > 0
+                        ? beneficiary.services
+                              .map((service) => service.service_name)
+                              .join(', ')
+                        : 'No Services Availed';
+
+                const barangay = beneficiary.address
+                    ? beneficiary.address.barangay
+                    : 'N/A';
+
+                return `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${beneficiary.id_num}</td>
+                <td>${beneficiary.firstname} ${beneficiary.middlename || ''} ${
+                    beneficiary.lastname
+                } ${beneficiary.suffix || ''}</td>
+                <td>${barangay}</td>
+                <td>${beneficiary.sex}</td>
+                <td>${birthDate.toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: '2-digit',
+                    year: 'numeric',
+                })}</td>
+                <td>${age}</td>
+                <td>${beneficiary.status}</td>
+            </tr>
+        `;
+            })
+            .join('');
+
+        tableBody.html(rows);
+    }
 });

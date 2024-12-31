@@ -195,8 +195,6 @@ class BeneficiaryController extends Controller
         $beneficiary = Beneficiary::findOrFail($id);
 
         $query = $beneficiary->services();
-
-        // Log request data to check the filters
         Log::info('Filter Params:', $request->all());
 
         if ($request->filled('serviceType')) {

@@ -29,6 +29,10 @@ Route::get('/Beneficiaries/search', [BeneficiaryController::class, 'search'])->n
 Route::post('/Beneficiary/Case-Management/store', [CaseController::class, 'intakestore']);
 Route::post('/Beneficiary/Case-Management/Interview/store', [CaseController::class, 'interviewstore']);
 
+// Generate Reports Routes
+Route::get('/generate-report/filter', [GenerateReport::class, 'filterReport'])->name('report.filter');
+
+
 Route::middleware(['role:admin'])->group(function () {
     Route::get('/Dashboard/Admin', [DashboardController::class, 'admin_index'])->name('admin.dashboard');
 });
