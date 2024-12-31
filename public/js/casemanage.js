@@ -239,6 +239,13 @@ $(document).ready(function () {
 
         filterBeneficiaries(serviceType, startDate, endDate);
     });
+    $('#clearButtonReport').on('click', function () {
+        $('#selectReportFilterType').val('');
+        $('#filterReportStartDate').val('');
+        $('#filterReportEndDate').val('');
+
+        filterBeneficiaries();
+    });
 
     function filterBeneficiaries(serviceType, startDate, endDate) {
         const tableBody = $('.reportTableContainer');

@@ -39,10 +39,8 @@
                         <label for="serviceEndDate">End Date</label>
                     </div>
 
-                    <!-- Button -->
-                    <div class="input-group-text">
-                        <button type="button" id="filterButtonReport" class="btn btn-primary">Filter</button>
-                    </div>
+                    <button type="button" id="filterButtonReport" class="btn btn-primary">Filter</button>
+                    <button type="button" id="clearButtonReport" class="btn btn-secondary">Clear</button>
                 </div>
             </div>
         </div>

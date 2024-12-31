@@ -32,13 +32,25 @@ class GenerateReport extends Controller
             }
         }
 
-        $beneficiaries = $query->with(['services', 'address'])->get();
+        if ($request->filled('startDate')) {
+            $startDate = $request->input('startDate');
+            $query->whereDate('created_at', '>=', $startDate);
+        }
+
+        if ($request->filled('endDate')) {
+            $endDate = $request->input('endDate');
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+
+        $beneficiaries = $query->with(['services', 'address'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         Log::info('Filtered Beneficiaries:', $beneficiaries->toArray());
 
         return response()->json([
             'success' => true,
-            'data' => $beneficiaries
+            'data' => $beneficiaries,
         ]);
     }
 }
