@@ -247,28 +247,47 @@ $(document).ready(function () {
         filterBeneficiaries();
     });
 
-    function filterBeneficiaries(serviceType, startDate, endDate) {
+    $('#rowsPerPage').change(function () {
+        const perPage = $(this).val();
+        const serviceType = $('#selectReportFilterType').val();
+        const startDate = $('#filterReportStartDate').val();
+        const endDate = $('#filterReportEndDate').val();
+
+        filterBeneficiaries(serviceType, startDate, endDate, perPage);
+    });
+
+    function filterBeneficiaries(
+        serviceType = '',
+        startDate = '',
+        endDate = '',
+        perPage = 10
+    ) {
         const tableBody = $('.reportTableContainer');
         tableBody.html(
-            '<tr><td colspan="9" class="text-center">Loading...</td></tr>'
+            '<tr><td colspan="8" class="text-center">Loading...</td></tr>'
         );
 
         $.ajax({
             url: '/generate-report/filter',
             type: 'GET',
-            data: { reportFilterType: serviceType, startDate, endDate },
+            data: {
+                reportFilterType: serviceType,
+                startDate,
+                endDate,
+                perPage,
+            },
             success: function (response) {
                 if (response.success && response.data.length > 0) {
                     populateBeneficiaryTable(response.data);
                 } else {
                     tableBody.html(
-                        '<tr><td colspan="9" class="text-center">No beneficiaries found.</td></tr>'
+                        '<tr><td colspan="8" class="text-center">No beneficiaries found.</td></tr>'
                     );
                 }
             },
             error: function () {
                 tableBody.html(
-                    '<tr><td colspan="9" class="text-center text-danger">An error occurred while fetching data.</td></tr>'
+                    '<tr><td colspan="8" class="text-center text-danger">An error occurred while fetching data.</td></tr>'
                 );
             },
         });
@@ -314,4 +333,11 @@ $(document).ready(function () {
 
         tableBody.html(rows);
     }
+
+    $('#rowsPerPage').change(function () {
+        const perPage = $(this).val();
+        const url = new URL(window.location.href);
+        url.searchParams.set('perPage', perPage);
+        window.location.href = url.toString();
+    });
 });

@@ -9,16 +9,21 @@ use Illuminate\Http\Request;
 
 class GenerateReport extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $beneficiaries = Beneficiary::orderBy('created_at', 'desc')->get();
+        $perPage = $request->get('perPage', 10);
+        $beneficiaries = Beneficiary::with(['services', 'address'])
+            ->orderBy('created_at', 'desc')
+            ->limit($perPage)
+            ->get();
+
         return view('page.generate_report', compact('beneficiaries'));
     }
 
     public function filterReport(Request $request)
     {
         $query = Beneficiary::query();
-        Log::info('Filter Params:', $request->all());
+        $perPage = $request->get('perPage', 10);
 
         if ($request->filled('reportFilterType')) {
             $filterType = $request->input('reportFilterType');
@@ -44,9 +49,8 @@ class GenerateReport extends Controller
 
         $beneficiaries = $query->with(['services', 'address'])
             ->orderBy('created_at', 'desc')
+            ->limit($perPage)
             ->get();
-
-        Log::info('Filtered Beneficiaries:', $beneficiaries->toArray());
 
         return response()->json([
             'success' => true,
