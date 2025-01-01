@@ -184,25 +184,6 @@ $(document).ready(function () {
         });
     });
 
-    // $('#birthdate').on('change', function () {
-    //     const birthdateInput = $(this).val();
-    //     const birthdate = new Date(birthdateInput);
-    //     const today = new Date();
-
-    //     let age = today.getFullYear() - birthdate.getFullYear();
-    //     const monthDifference = today.getMonth() - birthdate.getMonth();
-    //     const dayDifference = today.getDate() - birthdate.getDate();
-
-    //     if (
-    //         monthDifference < 0 ||
-    //         (monthDifference === 0 && dayDifference < 0)
-    //     ) {
-    //         age--;
-    //     }
-
-    //     $('#age').val(age >= 0 ? age : 0);
-    // });
-
     function calculateAge() {
         const birthdateInput = $('#birthdate').val();
         if (!birthdateInput) return;
@@ -227,6 +208,7 @@ $(document).ready(function () {
     $('#birthdate').on('change', calculateAge);
     calculateAge();
 
+    // Generate Report Functionalities
     $('#filterButtonReport').on('click', function () {
         const serviceType = $('#selectReportFilterType').val();
         const startDate = $('#filterReportStartDate').val();
@@ -268,6 +250,8 @@ $(document).ready(function () {
             '<tr><td colspan="8" class="text-center">Loading...</td></tr>'
         );
 
+        console.log('Filter type:', serviceType); // Debugging: Check selected filter type
+
         $.ajax({
             url: '/generate-report/filter',
             type: 'GET',
@@ -278,8 +262,10 @@ $(document).ready(function () {
                 perPage,
             },
             success: function (response) {
+                console.log('Response:', response); // Debugging: Check backend response
+
                 if (response.success && response.data.length > 0) {
-                    populateBeneficiaryTable(response.data);
+                    populateBeneficiaryTable(response.data, serviceType);
                 } else {
                     tableBody.html(
                         '<tr><td colspan="8" class="text-center">No beneficiaries found.</td></tr>'
@@ -294,44 +280,81 @@ $(document).ready(function () {
         });
     }
 
-    function populateBeneficiaryTable(beneficiaries) {
+    function populateBeneficiaryTable(beneficiaries, serviceType = '') {
         const tableBody = $('.reportTableContainer');
+
+        if (serviceType === 'Solo Parent') {
+            $('#categoryHeader').removeClass('d-none');
+            $('#remarksHeader').removeClass('d-none');
+            $('#sexHeader').addClass('d-none');
+            $('#birthdateHeader').addClass('d-none');
+            $('#statusHeader').addClass('d-none');
+        } else {
+            $('#categoryHeader').addClass('d-none');
+            $('#remarksHeader').addClass('d-none');
+            $('#sexHeader').removeClass('d-none');
+            $('#birthdateHeader').removeClass('d-none');
+            $('#statusHeader').removeClass('d-none');
+        }
+
+        // Generate table rows
         const rows = beneficiaries
             .map((beneficiary, index) => {
                 const birthDate = new Date(beneficiary.birthdate);
                 const age = new Date().getFullYear() - birthDate.getFullYear();
-                const services =
-                    beneficiary.services.length > 0
-                        ? beneficiary.services
-                              .map((service) => service.service_name)
-                              .join(', ')
-                        : 'No Services Availed';
-
                 const barangay = beneficiary.address
                     ? beneficiary.address.barangay
                     : 'N/A';
 
-                return `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${beneficiary.id_num}</td>
-                <td>${beneficiary.firstname} ${beneficiary.middlename || ''} ${
-                    beneficiary.lastname
-                } ${beneficiary.suffix || ''}</td>
-                <td>${barangay}</td>
-                <td>${beneficiary.sex}</td>
-                <td>${birthDate.toLocaleDateString('en-US', {
-                    month: 'long',
-                    day: '2-digit',
-                    year: 'numeric',
-                })}</td>
-                <td>${age}</td>
-                <td>${beneficiary.status}</td>
-            </tr>
-        `;
+                const category =
+                    beneficiary.category && beneficiary.category.trim() !== ''
+                        ? beneficiary.category
+                        : 'N/A';
+                const remarks =
+                    beneficiary.remarks && beneficiary.remarks.trim() !== ''
+                        ? beneficiary.remarks
+                        : 'N/A';
+
+                if (serviceType === 'Solo Parent') {
+                    return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${beneficiary.id_num}</td>
+                        <td>${beneficiary.firstname} ${
+                        beneficiary.middlename || ''
+                    } ${beneficiary.lastname} ${beneficiary.suffix || ''}</td>
+                        <td>${barangay}</td>
+                        <td>${age}</td>
+                        <td>${category}</td>
+                        <td>${remarks}</td>
+                    </tr>
+                `;
+                } else {
+                    return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${beneficiary.id_num}</td>
+                        <td>${beneficiary.firstname} ${
+                        beneficiary.middlename || ''
+                    } ${beneficiary.lastname} ${beneficiary.suffix || ''}</td>
+                        <td>${barangay}</td>
+                        <td>${beneficiary.sex}</td>
+                        <td>${birthDate.toLocaleDateString('en-US', {
+                            month: 'long',
+                            day: '2-digit',
+                            year: 'numeric',
+                        })}</td>
+                        <td>${age}</td>
+                        <td>${beneficiary.status}</td>
+                    </tr>
+                `;
+                }
             })
             .join('');
 
+        console.log('Generated rows:', rows);
+
         tableBody.html(rows);
     }
+    // End of Generate Report Functionalities
 });

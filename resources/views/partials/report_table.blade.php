@@ -7,10 +7,12 @@
                 <th class="text-center">ID Number</th>
                 <th class="text-center">Full Name</th>
                 <th class="text-center">Barangay</th>
-                <th class="text-center">Sex</th>
-                <th class="text-center">Birthdate</th>
+                <th class="text-center" id="sexHeader">Sex</th>
+                <th class="text-center" id="birthdateHeader">Birthdate</th>
                 <th class="text-center">Age</th>
-                <th class="text-center">Status</th>
+                <th class="text-center" id="statusHeader">Status</th>
+                <th class="text-center d-none" id="categoryHeader">Category</th>
+                <th class="text-center d-none" id="remarksHeader">Remarks</th>
             </tr>
         </thead>
         <tbody class="reportTableContainer">
