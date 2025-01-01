@@ -13,7 +13,6 @@ class GenerateReport extends Controller
     {
         $perPage = $request->get('perPage', 10);
         $beneficiaries = Beneficiary::with(['services', 'address'])
-            ->orderBy('created_at', 'desc')
             ->limit($perPage)
             ->get();
 
@@ -24,12 +23,13 @@ class GenerateReport extends Controller
     {
         $query = Beneficiary::query();
         $perPage = $request->get('perPage', 10);
+        $statuses = Beneficiary::select('status')->distinct()->pluck('status')->toArray();
 
         if ($request->filled('reportFilterType')) {
             $filterType = $request->input('reportFilterType');
 
-            if ($filterType === 'Solo Parent') {
-                $query->where('status', 'Solo Parent');
+            if (in_array($filterType, $statuses)) {
+                $query->where('status', $filterType);
             } else {
                 $query->whereHas('services', function ($q) use ($filterType) {
                     $q->where('service_name', $filterType);

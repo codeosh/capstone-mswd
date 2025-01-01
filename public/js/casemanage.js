@@ -243,6 +243,7 @@ $(document).ready(function () {
         $('#selectReportFilterType').val('');
         $('#filterReportStartDate').val('');
         $('#filterReportEndDate').val('');
+        $('#rowsPerPage').val(10);
 
         filterBeneficiaries();
     });
@@ -333,11 +334,4 @@ $(document).ready(function () {
 
         tableBody.html(rows);
     }
-
-    $('#rowsPerPage').change(function () {
-        const perPage = $(this).val();
-        const url = new URL(window.location.href);
-        url.searchParams.set('perPage', perPage);
-        window.location.href = url.toString();
-    });
 });

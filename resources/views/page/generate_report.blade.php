@@ -3,11 +3,11 @@
 @section('title', "MSWDO - Generate Reports - Page")
 
 @section('content')
-<div class="card" style="height: 90%;">
+<div class="card" style="height: 90vh;">
     <div class="card-header">
         <h5 class="mt-1">Generate Reports</h5>
     </div>
-    <div class="card-body">
+    <div class="card-body" style="overflow-x:hidden;overflow-y:auto;">
         <div class="row mb-3">
             <div class="col-md-6">
                 <div class="input-group">
@@ -46,15 +46,20 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12 d-flex justify-content-end">
                 <div class="d-flex gap-2 align-items-center mb-3">
-                    <label for="rowsPerPage">Rows:</label>
+                    <label for="rowsPerPage" class="me-2">Rows:</label>
                     <select id="rowsPerPage" class="form-select d-inline-block" style="width: auto;">
                         <option value="10" {{ request('perPage')==10 ? 'selected' : '' }}>10</option>
                         <option value="25" {{ request('perPage')==25 ? 'selected' : '' }}>25</option>
                         <option value="50" {{ request('perPage')==50 ? 'selected' : '' }}>50</option>
                         <option value="100" {{ request('perPage')==100 ? 'selected' : '' }}>100</option>
+                        <option value="200" {{ request('perPage')==200 ? 'selected' : '' }}>200</option>
+                        <option value="500" {{ request('perPage')==500 ? 'selected' : '' }}>500</option>
                     </select>
+                    <button type="button" id="printButtonReport" class="btn btn-primary">
+                        <i class="fas fa-print"></i> Print
+                    </button>
                 </div>
             </div>
         </div>
