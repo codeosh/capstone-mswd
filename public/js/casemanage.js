@@ -213,6 +213,7 @@ $(document).ready(function () {
         const serviceType = $('#selectReportFilterType').val();
         const startDate = $('#filterReportStartDate').val();
         const endDate = $('#filterReportEndDate').val();
+        $('#rowsPerPage').val(10);
 
         if (!serviceType) {
             showToast('Please select a Filter Type', 'danger');
@@ -250,8 +251,6 @@ $(document).ready(function () {
             '<tr><td colspan="8" class="text-center">Loading...</td></tr>'
         );
 
-        console.log('Filter type:', serviceType); // Debugging: Check selected filter type
-
         $.ajax({
             url: '/generate-report/filter',
             type: 'GET',
@@ -262,8 +261,6 @@ $(document).ready(function () {
                 perPage,
             },
             success: function (response) {
-                console.log('Response:', response); // Debugging: Check backend response
-
                 if (response.success && response.data.length > 0) {
                     populateBeneficiaryTable(response.data, serviceType);
                 } else {

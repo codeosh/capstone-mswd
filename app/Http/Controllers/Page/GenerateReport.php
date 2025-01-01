@@ -48,7 +48,6 @@ class GenerateReport extends Controller
         }
 
         $beneficiaries = $query->with(['services', 'address'])
-            ->orderBy('created_at', 'desc')
             ->limit($perPage)
             ->get();
 
