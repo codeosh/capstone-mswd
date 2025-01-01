@@ -108,6 +108,7 @@
         <script src="{{asset('js/showalert.js')}}"></script>
         <script src="{{asset('js/beneficiarypage.js')}}"></script>
         <script src="{{asset('js/casemanage.js')}}"></script>
+        <script src="{{asset('js/printreport.js')}}"></script>
         @vite('resources/js/app.js')
     </body>
 
