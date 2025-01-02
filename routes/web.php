@@ -24,6 +24,7 @@ Route::put('/Beneficiary/update/{id}', [BeneficiaryController::class, 'update'])
 Route::post('/Beneficiary/add-service', [BeneficiaryController::class, 'addService']);
 Route::get('/Beneficiaries/{id}/filtered-services', [BeneficiaryController::class, 'getFilteredServices']);
 Route::get('/Beneficiaries/search', [BeneficiaryController::class, 'search'])->name('beneficiaries.search');
+Route::get('/getBarangayData', [DashboardController::class, 'getBarangayData']);
 
 // Case Management Routes
 Route::post('/Beneficiary/Case-Management/store', [CaseController::class, 'intakestore']);

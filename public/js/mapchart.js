@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var map = L.map('map').setView([10.442064, 124.988804], 12);
 
     var solidColorLayer = L.tileLayer('', {
-        attribution: 'Custom Solid Color Background',
+        attribution:
+            '<img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Flag_of_the_Philippines.svg" ' +
+            'style="width: 20px; vertical-align: middle;" alt="Philippines Flag"> Sogod, Southern Leyte',
     });
 
     solidColorLayer.on('tileloadstart', function (event) {
@@ -18,31 +20,101 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     solidColorLayer.addTo(map);
 
-    // Load GeoJSON data
-    fetch('/mapping/Sogod_Brgys.geojson')
-        .then((response) => response.json())
-        .then((data) => {
-            L.geoJson(data, {
-                style: function (feature) {
-                    return {
-                        fillColor: getColor(feature.properties.AREA_SQKM),
-                        weight: 2,
-                        opacity: 1,
-                        color: 'white',
-                        fillOpacity: 1,
-                        className: 'mapEffects',
-                    };
-                },
-                onEachFeature: function (feature, layer) {
-                    layer.bindPopup(
-                        `<b>Barangay:</b> ${feature.properties.ADM4_EN}<br>` +
-                            `<b>Area (sq km):</b> ${feature.properties.AREA_SQKM}`
-                    );
-                },
-            }).addTo(map);
+    fetch('/getBarangayData')
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch barangay data');
+            }
+            return response.json();
         })
-        .catch((error) => console.error('Error loading GeoJSON:', error));
+        .then((barangayData) => {
+            fetch('/mapping/Sogod_Brgys.geojson')
+                .then((response) => response.json())
+                .then((data) => {
+                    L.geoJson(data, {
+                        style: function (feature) {
+                            const barangayInfo = barangayData.find(
+                                (barangay) =>
+                                    barangay.barangay ===
+                                    feature.properties.ADM4_EN
+                            );
+                            const serviceCount = barangayInfo
+                                ? barangayInfo.total_beneficiaries
+                                : 0;
+                            return {
+                                fillColor: getColor(serviceCount),
+                                weight: 2,
+                                opacity: 1,
+                                color: 'white',
+                                fillOpacity: 1,
+                                className: 'mapEffects',
+                            };
+                        },
+                        onEachFeature: function (feature, layer) {
+                            const barangayInfo = barangayData.find(
+                                (barangay) =>
+                                    barangay.barangay ===
+                                    feature.properties.ADM4_EN
+                            );
 
+                            if (barangayInfo) {
+                                layer.bindPopup(
+                                    `<b>Barangay:</b> ${feature.properties.ADM4_EN}<br>` +
+                                        `<b>Total Beneficiaries:</b> ${barangayInfo.total_beneficiaries}<br>` +
+                                        `<b>Solo Parent Count:</b> ${barangayInfo.solo_parent_count}<br>` +
+                                        `<b>AICS Services:</b> ${barangayInfo.aics_count}<br>` +
+                                        `<b>VAW Services:</b> ${barangayInfo.vaw_count}<br>` +
+                                        `<b>VAC Services:</b> ${barangayInfo.vac_count}<br>` +
+                                        `<b>CAR Services:</b> ${barangayInfo.car_count}<br>` +
+                                        `<b>CICL Services:</b> ${barangayInfo.cicl_count}`
+                                );
+                            }
+                        },
+                    }).addTo(map);
+
+                    // Add the legend to the map
+                    var legend = L.control({ position: 'bottomright' });
+
+                    legend.onAdd = function () {
+                        var div = L.DomUtil.create('div', 'info legend');
+                        div.style.backgroundColor = 'white';
+                        div.style.padding = '10px';
+                        div.style.borderRadius = '5px';
+                        div.style.boxShadow = '0 0 5px rgba(0, 0, 0, 0.5)';
+                        div.style.fontSize = '12px';
+
+                        var grades = [0, 5, 10, 20, 50, 100];
+                        var labels = [];
+
+                        for (var i = 0; i < grades.length; i++) {
+                            div.innerHTML +=
+                                '<div style="display: flex; align-items: center; margin-bottom: 5px;">' +
+                                '<i style="background:' +
+                                getColor(grades[i]) +
+                                '; width: 20px; height: 20px; margin-right: 5px;"></i>' +
+                                '<span>' +
+                                grades[i] +
+                                (grades[i + 1]
+                                    ? '&ndash;' + grades[i + 1] + ''
+                                    : '+') +
+                                '</span>' +
+                                '</div>';
+                        }
+                        return div;
+                    };
+
+                    legend.addTo(map);
+                })
+                .catch((error) =>
+                    console.error('Error loading GeoJSON:', error)
+                );
+        })
+        .catch((error) => {
+            console.error('Error fetching barangay data:', error);
+            alert('Failed to load barangay data.');
+        });
+
+    // Function to get color based on service count
     function getColor(value) {
         return value > 100
             ? '#800026'
