@@ -10,6 +10,7 @@
     <div class="card-body" style="overflow-x:hidden;overflow-y:auto;">
         <div class="row mb-3">
             <div class="col-md-6">
+                <small class="text-muted">Filtering:</small>
                 <div class="input-group">
                     <!-- Dropdown -->
                     <div class="form-floating">
@@ -41,6 +42,32 @@
 
                     <button type="button" id="filterButtonReport" class="btn btn-primary">Filter</button>
                     <button type="button" id="clearButtonReport" class="btn btn-secondary">Clear</button>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <small class="text-muted">Edit Print:</small>
+                <div class="input-group">
+                    <!-- Report Title -->
+                    <div class="form-floating">
+                        <input type="text" id="reportTitle" name="reportTitle" class="form-control"
+                            placeholder="Report Title" />
+                        <label for="reportTitle">Report Title</label>
+                    </div>
+
+                    <!-- Email Address -->
+                    <div class="form-floating">
+                        <input type="email" id="officeEmail" name="officeEmail" class="form-control"
+                            placeholder="Email Address" />
+                        <label for="officeEmail">Email Address</label>
+                    </div>
+
+                    <!-- Office Cell Number -->
+                    <div class="form-floating">
+                        <input type="text" id="officeCell" name="officeCell" class="form-control"
+                            placeholder="Office Cell Number" />
+                        <label for="officeCell">Office Cell Number</label>
+                    </div>
                 </div>
             </div>
         </div>

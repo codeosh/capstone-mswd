@@ -23,18 +23,19 @@ $(document).ready(function () {
             .get()
             .join('');
 
-        // Create a hidden iframe for printing
+        const reportTitle = $('#reportTitle').val() || 'Generated Report';
+        const officeEmail = $('#officeEmail').val() || 'mswdlgusogod@gmail.com';
+        const officeCell = $('#officeCell').val() || '09090172012';
+
         const iframe = document.createElement('iframe');
         iframe.style.display = 'none';
         document.body.appendChild(iframe);
 
         const images = [new Image(), new Image()];
 
-        // Set image sources
         images[0].src = mswdIconUrl;
         images[1].src = sogodLogoUrl;
 
-        // Wait for both images to load
         Promise.all(
             images.map(
                 (img) =>
@@ -67,10 +68,10 @@ $(document).ready(function () {
                     </div>
                     <div class="contact-info">
                         Municipal Social Welfare and Development Office<br>
-                        Email Address: mswdlgusogod@gmail.com<br>
-                        Office Cell Number: 09090172012
+                        Email Address:${officeEmail}<br>
+                        Office Cell Number: ${officeCell}
                     </div>
-                    <h3>Generated Report</h3>
+                    <h3>${reportTitle}</h3>
                     <table><thead>
                         ${visibleHeaders
                             .get()
