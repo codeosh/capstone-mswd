@@ -55,7 +55,6 @@ $(document).ready(function () {
         );
         printWindow.document.write('</div>');
 
-        // New contact information text
         printWindow.document.write('<div class="contact-info">');
         printWindow.document.write(
             'Municipal Social Welfare and Development Office<br>' +
