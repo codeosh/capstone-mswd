@@ -68,12 +68,22 @@
 <div class="card mt-3">
     <div class="card-body">
         <div class="row">
-            <div class="col-md-6 shadow p-3">
+            <div class="d-flex justify-content-end">
+                <a href="#" class="btn btn-primary" id="beneficiaryLogs"
+                    style="box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);">
+                    Logs
+                </a>
+            </div>
+            <div class="col-md-4 shadow p-3">
                 <label for="pieChart" class="form-label">Beneficiary Demographics Overview:</label>
                 <div class="border" id="pieChart" style="width: 100%; height: 400px;"></div>
             </div>
-        </div>
+            <div class="col-md-8 p-3">
 
+                <h5>Beneficiary Logs</h5>
+                @include('partials.beneficiary_logs')
+            </div>
+        </div>
     </div>
 </div>
 

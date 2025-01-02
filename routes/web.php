@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Log\LogController;
 use App\Http\Controllers\Page\BeneficiaryController;
 use App\Http\Controllers\Page\CaseController;
 use App\Http\Controllers\Page\GenerateReport;
@@ -25,6 +26,8 @@ Route::post('/Beneficiary/add-service', [BeneficiaryController::class, 'addServi
 Route::get('/Beneficiaries/{id}/filtered-services', [BeneficiaryController::class, 'getFilteredServices']);
 Route::get('/Beneficiaries/search', [BeneficiaryController::class, 'search'])->name('beneficiaries.search');
 Route::get('/getBarangayData', [DashboardController::class, 'getBarangayData']);
+Route::get('/getBeneficiaryTableData', [LogController::class, 'getBeneficiaryTableData']);
+
 
 // Case Management Routes
 Route::post('/Beneficiary/Case-Management/store', [CaseController::class, 'intakestore']);
