@@ -51,21 +51,20 @@
                     <!-- Report Title -->
                     <div class="form-floating">
                         <input type="text" id="reportTitle" name="reportTitle" class="form-control"
-                            placeholder="Report Title" />
+                            autocomplete="off" />
                         <label for="reportTitle">Report Title</label>
                     </div>
 
                     <!-- Email Address -->
                     <div class="form-floating">
                         <input type="email" id="officeEmail" name="officeEmail" class="form-control"
-                            placeholder="Email Address" />
+                            autocomplete="off" />
                         <label for="officeEmail">Email Address</label>
                     </div>
 
                     <!-- Office Cell Number -->
                     <div class="form-floating">
-                        <input type="text" id="officeCell" name="officeCell" class="form-control"
-                            placeholder="Office Cell Number" />
+                        <input type="text" id="officeCell" name="officeCell" class="form-control" autocomplete="off" />
                         <label for="officeCell">Office Cell Number</label>
                     </div>
                 </div>
