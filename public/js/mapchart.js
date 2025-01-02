@@ -1,16 +1,63 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize the map
-    var map = L.map('map').setView([10.384461, 124.980933], 13);
+    var map = L.map('map').setView([10.442064, 124.988804], 12);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-    }).addTo(map);
+    var solidColorLayer = L.tileLayer('', {
+        attribution: 'Custom Solid Color Background',
+    });
 
-    // Example Marker
-    var marker = L.marker([10.384461, 124.980933]).addTo(map);
-    marker
-        .bindPopup('<b>MSWDO Office</b><br>Sogod, Southern Leyte')
-        .openPopup();
+    solidColorLayer.on('tileloadstart', function (event) {
+        var canvas = document.createElement('canvas');
+        canvas.width = 256;
+        canvas.height = 256;
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#f5f5f5';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        event.tile.src = canvas.toDataURL();
+    });
+    solidColorLayer.addTo(map);
+
+    // Load GeoJSON data
+    fetch('/mapping/Sogod_Brgys.geojson')
+        .then((response) => response.json())
+        .then((data) => {
+            L.geoJson(data, {
+                style: function (feature) {
+                    return {
+                        fillColor: getColor(feature.properties.AREA_SQKM),
+                        weight: 2,
+                        opacity: 1,
+                        color: 'white',
+                        fillOpacity: 1,
+                        className: 'mapEffects',
+                    };
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup(
+                        `<b>Barangay:</b> ${feature.properties.ADM4_EN}<br>` +
+                            `<b>Area (sq km):</b> ${feature.properties.AREA_SQKM}`
+                    );
+                },
+            }).addTo(map);
+        })
+        .catch((error) => console.error('Error loading GeoJSON:', error));
+
+    function getColor(value) {
+        return value > 100
+            ? '#800026'
+            : value > 50
+            ? '#BD0026'
+            : value > 20
+            ? '#E31A1C'
+            : value > 10
+            ? '#FC4E2A'
+            : value > 5
+            ? '#FD8D3C'
+            : value > 0
+            ? '#FEB24C'
+            : '#FFEDA0';
+    }
 
     // Add event listener for the filter dropdown
     var filterServiceMap = document.getElementById('filterServiceMap');

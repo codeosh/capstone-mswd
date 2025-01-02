@@ -83,7 +83,8 @@
                         <option value="200" {{ request('perPage')==200 ? 'selected' : '' }}>200</option>
                         <option value="500" {{ request('perPage')==500 ? 'selected' : '' }}>500</option>
                     </select>
-                    <button type="button" id="printButtonReport" class="btn btn-primary">
+                    <button type="button" id="printButtonReport" class="btn btn-primary"
+                        style="box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);">
                         <i class="fas fa-print"></i> Print
                     </button>
                 </div>

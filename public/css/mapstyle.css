@@ -1,0 +1,5 @@
+/* public\css\mapstyle.css */
+.mapEffects {
+    filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.5));
+    opacity: 1;
+}
