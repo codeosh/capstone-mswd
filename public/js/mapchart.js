@@ -27,11 +27,19 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             return response.json();
         })
-        .then((barangayData) => {
+        .then((data) => {
+            const barangayData = data.barangayData; // Access barangayData correctly
+            if (!Array.isArray(barangayData)) {
+                console.error(
+                    'Expected barangayData to be an array, but got:',
+                    barangayData
+                );
+                return;
+            }
             fetch('/mapping/Sogod_Brgys.geojson')
                 .then((response) => response.json())
-                .then((data) => {
-                    L.geoJson(data, {
+                .then((geoJsonData) => {
+                    L.geoJson(geoJsonData, {
                         style: function (feature) {
                             const barangayInfo = barangayData.find(
                                 (barangay) =>
@@ -141,46 +149,86 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Initialize ApexChart
-    var options = {
-        chart: {
-            type: 'bar',
-            height: 250,
-        },
-        series: [
-            {
-                name: 'Example Data',
-                data: [10, 15, 8, 12, 20],
-            },
-        ],
-        xaxis: {
-            categories: ['AICS', 'VAW', 'VAC', 'CAR', 'CICL'],
-        },
-    };
+    fetch('/getBarangayData')
+        .then((response) => response.json())
+        .then((data) => {
+            const barangayData = data.barangayData;
+            const yearlyTrendData = data.yearlyTrendData;
 
-    var chart = new ApexCharts(document.querySelector('#chart'), options);
-    chart.render();
+            // Prepare data for Line Chart (Total Beneficiaries per Service/Status per Barangay)
+            const lineChartData = [
+                { name: 'AICS', data: [] },
+                { name: 'VAW', data: [] },
+                { name: 'VAC', data: [] },
+                { name: 'CAR', data: [] },
+                { name: 'CICL', data: [] },
+            ];
 
-    // Initialize Line Chart
-    var lineOptions = {
-        chart: {
-            type: 'line',
-            height: 250,
-        },
-        series: [
-            {
-                name: 'Trend Data',
-                data: [5, 10, 15, 10, 5],
-            },
-        ],
-        xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-        },
-    };
+            barangayData.forEach((barangay) => {
+                lineChartData[0].data.push(barangay.aics_count);
+                lineChartData[1].data.push(barangay.vaw_count);
+                lineChartData[2].data.push(barangay.vac_count);
+                lineChartData[3].data.push(barangay.car_count);
+                lineChartData[4].data.push(barangay.cicl_count);
+            });
 
-    var lineChart = new ApexCharts(
-        document.querySelector('#lineChart'),
-        lineOptions
-    );
-    lineChart.render();
+            // Initialize Line Chart
+            var lineOptions = {
+                chart: {
+                    type: 'line',
+                    height: 250,
+                },
+                series: lineChartData,
+                xaxis: {
+                    categories: barangayData.map(
+                        (barangay) => barangay.barangay
+                    ),
+                },
+            };
+
+            var lineChart = new ApexCharts(
+                document.querySelector('#lineChart'),
+                lineOptions
+            );
+            lineChart.render();
+
+            // Prepare data for Bar Chart (Service Trend by Year)
+            const barChartData = [
+                { name: 'AICS', data: [] },
+                { name: 'VAW', data: [] },
+                { name: 'VAC', data: [] },
+                { name: 'CAR', data: [] },
+                { name: 'CICL', data: [] },
+            ];
+
+            yearlyTrendData.forEach((trend) => {
+                barChartData[0].data.push(trend.aics_count);
+                barChartData[1].data.push(trend.vaw_count);
+                barChartData[2].data.push(trend.vac_count);
+                barChartData[3].data.push(trend.car_count);
+                barChartData[4].data.push(trend.cicl_count);
+            });
+
+            // Initialize Bar Chart
+            var barOptions = {
+                chart: {
+                    type: 'bar',
+                    height: 250,
+                },
+                series: barChartData,
+                xaxis: {
+                    categories: yearlyTrendData.map((trend) => trend.year),
+                },
+            };
+
+            var barChart = new ApexCharts(
+                document.querySelector('#barChart'),
+                barOptions
+            );
+            barChart.render();
+        })
+        .catch((error) => {
+            console.error('Error fetching barangay data:', error);
+            alert('Failed to load barangay data.');
+        });
 });

@@ -59,7 +59,7 @@
             </div>
 
             <div class="col-md-6 shadow">
-                <div id="chart" style="width: 100%;"></div>
+                <div id="barChart" style="width: 100%;"></div>
                 <div id="lineChart" style="width: 100%;"></div>
             </div>
         </div>
