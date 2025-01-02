@@ -6,28 +6,50 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <div class="d-flex justify-content-between">
-            <div>
-                <div class="form-floating">
-                    <select name="filterServiceMap" id="filterServiceMap" class="form-select w-100">
-                        <option value="">Select Filter Type</option>
-                        <option value="AICS">AICS</option>
-                        <option value="VAW">VAW</option>
-                        <option value="VAC">VAC</option>
-                        <option value="CAR">CAR</option>
-                        <option value="CICL">CICL</option>
-                        <option value="Solo Parent">Solo Parent</option>
-                    </select>
-                    <label for="filterServiceMap">Filter Type:</label>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <!-- Dropdown -->
+                    <div class="form-floating">
+                        <select id="selectMapFilterType" name="mapFilterType" class="form-select">
+                            <option value="">Select Filter Type</option>
+                            <option value="AICS">AICS</option>
+                            <option value="VAW">VAW</option>
+                            <option value="VAC">VAC</option>
+                            <option value="CAR">CAR</option>
+                            <option value="CICL">CICL</option>
+                            <option value="Solo Parent">Solo Parent</option>
+                        </select>
+                        <label for="selectMapFilterType">Filter Type</label>
+                    </div>
+
+                    <!-- Start Date -->
+                    <div class="form-floating">
+                        <input type="date" id="filterMapStartDate" name="mapStartDate" class="form-control"
+                            placeholder="Start Date" aria-label="Start Date" />
+                        <label for="serviceStartDate">Start Date</label>
+                    </div>
+
+                    <!-- End Date -->
+                    <div class="form-floating">
+                        <input type="date" id="filterMapEndDate" name="mapEndDate" class="form-control"
+                            placeholder="End Date" aria-label="End Date" />
+                        <label for="serviceEndDate">End Date</label>
+                    </div>
                 </div>
             </div>
+
             <div class="text-muted" id="clock"></div>
         </div>
     </div>
 </div>
 <div class="card mt-3">
     <div class="card-body">
-        <div id="map" style="height: 500px; width: 100%; margin-top: 20px;"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="map" style="height: 500px; width: 100%; margin-top: 20px;"></div>
+            </div>
+        </div>
     </div>
 </div>
 
