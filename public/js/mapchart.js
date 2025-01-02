@@ -1,4 +1,6 @@
-// public\js\map.js
+// public\js\mapchart.js
+import ApexCharts from 'apexcharts';
+
 // Initialize the map
 var map = L.map('map').setView([14.5995, 120.9842], 13); // Default coordinates (Manila, Philippines)
 
@@ -19,3 +21,23 @@ document
         console.log('Selected Filter:', selectedFilter);
         // Add your filtering logic here
     });
+
+// Initialize ApexChart
+var options = {
+    chart: {
+        type: 'bar',
+        height: 500,
+    },
+    series: [
+        {
+            name: 'Example Data',
+            data: [10, 15, 8, 12, 20],
+        },
+    ],
+    xaxis: {
+        categories: ['AICS', 'VAW', 'VAC', 'CAR', 'CICL'],
+    },
+};
+
+var chart = new ApexCharts(document.querySelector('#chart'), options);
+chart.render();

@@ -49,11 +49,15 @@
             <div class="col-md-6">
                 <div id="map" style="height: 500px; width: 100%; margin-top: 20px;"></div>
             </div>
+
+            <div class="col-md-6">
+                <div id="chart" style="height: 500px; width: 100%;"></div>
+            </div>
         </div>
     </div>
 </div>
 
 {{-- Scripts Compiled --}}
-<script src="{{asset('js/map.js')}}"></script>
+<script src="{{asset('js/mapchart.js')}}"></script>
 <script src="{{asset('js/clock.js')}}"></script>
 @endsection
