@@ -38,20 +38,20 @@
                     </div>
                 </div>
             </div>
-
-            <div class="text-muted" id="clock"></div>
+            <div class="text-white shadow p-2 rounded bg-dark" style="width: 100px;" id="clock"></div>
         </div>
     </div>
 </div>
 <div class="card mt-3">
     <div class="card-body">
         <div class="row">
-            <div class="col-md-6">
-                <div id="map" style="height: 500px; width: 100%; margin-top: 20px;"></div>
+            <div class="col-md-6 p-2">
+                <div id="map" style="height: 520px; width: 100%;"></div>
             </div>
 
-            <div class="col-md-6">
-                <div id="chart" style="height: 500px; width: 100%;"></div>
+            <div class="col-md-6 shadow">
+                <div id="chart" style="width: 100%;"></div>
+                <div id="lineChart" style="width: 100%;"></div>
             </div>
         </div>
     </div>

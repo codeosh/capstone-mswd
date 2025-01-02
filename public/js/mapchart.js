@@ -1,43 +1,67 @@
-// public\js\mapchart.js
-import ApexCharts from 'apexcharts';
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize the map
+    var map = L.map('map').setView([10.384461, 124.980933], 13);
 
-// Initialize the map
-var map = L.map('map').setView([14.5995, 120.9842], 13); // Default coordinates (Manila, Philippines)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+    }).addTo(map);
 
-// Add OpenStreetMap tile layer
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-}).addTo(map);
+    // Example Marker
+    var marker = L.marker([10.384461, 124.980933]).addTo(map);
+    marker
+        .bindPopup('<b>MSWDO Office</b><br>Sogod, Southern Leyte')
+        .openPopup();
 
-// Example Marker
-var marker = L.marker([14.5995, 120.9842]).addTo(map);
-marker.bindPopup('<b>MSWDO Office</b><br>Manila, Philippines').openPopup();
+    // Add event listener for the filter dropdown
+    var filterServiceMap = document.getElementById('filterServiceMap');
+    if (filterServiceMap) {
+        filterServiceMap.addEventListener('change', function () {
+            var selectedFilter = this.value;
+            console.log('Selected Filter:', selectedFilter);
+            // Add your filtering logic here
+        });
+    }
 
-// Add event listener for the filter dropdown (if needed for filtering markers)
-document
-    .getElementById('filterServiceMap')
-    .addEventListener('change', function () {
-        var selectedFilter = this.value;
-        console.log('Selected Filter:', selectedFilter);
-        // Add your filtering logic here
-    });
-
-// Initialize ApexChart
-var options = {
-    chart: {
-        type: 'bar',
-        height: 500,
-    },
-    series: [
-        {
-            name: 'Example Data',
-            data: [10, 15, 8, 12, 20],
+    // Initialize ApexChart
+    var options = {
+        chart: {
+            type: 'bar',
+            height: 250,
         },
-    ],
-    xaxis: {
-        categories: ['AICS', 'VAW', 'VAC', 'CAR', 'CICL'],
-    },
-};
+        series: [
+            {
+                name: 'Example Data',
+                data: [10, 15, 8, 12, 20],
+            },
+        ],
+        xaxis: {
+            categories: ['AICS', 'VAW', 'VAC', 'CAR', 'CICL'],
+        },
+    };
 
-var chart = new ApexCharts(document.querySelector('#chart'), options);
-chart.render();
+    var chart = new ApexCharts(document.querySelector('#chart'), options);
+    chart.render();
+
+    // Initialize Line Chart
+    var lineOptions = {
+        chart: {
+            type: 'line',
+            height: 250,
+        },
+        series: [
+            {
+                name: 'Trend Data',
+                data: [5, 10, 15, 10, 5],
+            },
+        ],
+        xaxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        },
+    };
+
+    var lineChart = new ApexCharts(
+        document.querySelector('#lineChart'),
+        lineOptions
+    );
+    lineChart.render();
+});
