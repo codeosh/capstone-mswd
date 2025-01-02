@@ -42,7 +42,7 @@
                     </div>
                 </div>
             </div>
-            <div class="text-white shadow p-2 rounded bg-dark text-center" style="width: 120px;" id="clock"></div>
+            <div class="text-white shadow p-2 rounded bg-dark text-center" style="width: 150px;" id="clock"></div>
         </div>
     </div>
 </div>

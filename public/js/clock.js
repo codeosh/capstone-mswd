@@ -6,12 +6,17 @@ function updateClock() {
     const seconds = now.getSeconds().toString().padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
 
-    // Convert to 12-hour format
     hours = hours % 12;
     hours = hours ? hours : 12;
 
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const dateString = now.toLocaleDateString('en-US', options);
+
     const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
-    document.getElementById('clock').textContent = timeString;
+
+    document.getElementById(
+        'clock'
+    ).textContent = `${dateString}  ${timeString}`;
 }
 
 setInterval(updateClock, 1000);
