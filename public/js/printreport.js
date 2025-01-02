@@ -19,8 +19,6 @@ $(document).ready(function () {
             })
             .get()
             .join('');
-
-        // Open a new print window
         const printWindow = window.open('', '', 'height=600,width=1000');
 
         printWindow.document.write('<html><head>');
