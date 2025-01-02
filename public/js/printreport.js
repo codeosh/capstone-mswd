@@ -1,5 +1,8 @@
 // public\js\printreport.js
 $(document).ready(function () {
+    const mswdIconUrl = 'http://127.0.0.1:8000/images/logo/mswd-icon.png';
+    const sogodLogoUrl = 'http://127.0.0.1:8000/images/logo/sogodlogo.png';
+
     // Functions for Print button
     $('#printButtonReport').on('click', function () {
         const visibleHeaders = $('table thead th:not(.d-none)');
@@ -19,68 +22,78 @@ $(document).ready(function () {
             })
             .get()
             .join('');
-        const printWindow = window.open('', '', 'height=600,width=1000');
 
-        printWindow.document.write('<html><head>');
-        printWindow.document.write(
-            '<style>' +
-                'body { font-family: Arial, sans-serif; text-align: center; }' +
-                'table { width: 100%; border-collapse: collapse; margin-top: 20px; }' +
-                'th, td { border: 1px solid #000; padding: 8px; text-align: center; }' +
-                'th { background-color: #f2f2f2; }' +
-                '@media print { ' +
-                '  body { margin: 0; padding: 0; }' +
-                '  .no-print { display: none; }' +
-                '  @page { margin: 20px; size: auto; }' +
-                '}' +
-                '.header-container { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; }' +
-                '.header-container img { width: 100px; height: auto; }' +
-                '.header-container p { font-size: 16px; margin: 0; }' +
-                '.contact-info { font-size: 14px; margin-top: 10px; font-weight: normal; }' +
-                '</style>'
-        );
-        printWindow.document.write('</head><body>');
+        // Create a hidden iframe for printing
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
 
-        printWindow.document.write('<div class="header-container">');
-        printWindow.document.write(
-            '<img src="/images/logo/mswd-icon.png" alt="MSWD Icon">'
-        );
-        printWindow.document.write(
-            '<p>Republic of the Philippines<br>Province of Southern Leyte<br>Municipality of Sogod</p>'
-        );
-        printWindow.document.write(
-            '<img src="/images/logo/sogodlogo.png" alt="Sogod Logo">'
-        );
-        printWindow.document.write('</div>');
+        const images = [new Image(), new Image()];
 
-        printWindow.document.write('<div class="contact-info">');
-        printWindow.document.write(
-            'Municipal Social Welfare and Development Office<br>' +
-                'Email Address: mswdlgusogod@gmail.com<br>' +
-                'Office Cell Number: 09090172012'
-        );
-        printWindow.document.write('</div>');
+        // Set image sources
+        images[0].src = mswdIconUrl;
+        images[1].src = sogodLogoUrl;
 
-        printWindow.document.write('<h3>Generated Report</h3>');
-        printWindow.document.write(
-            '<table><thead>' +
-                visibleHeaders
-                    .get()
-                    .map(function (header) {
-                        return '<th>' + $(header).html() + '</th>';
+        // Wait for both images to load
+        Promise.all(
+            images.map(
+                (img) =>
+                    new Promise((resolve) => {
+                        img.onload = resolve;
+                        img.onerror = resolve;
                     })
-                    .join('') +
-                '</thead><tbody>' +
-                visibleContent +
-                '</tbody></table>'
-        );
-        printWindow.document.write('</body></html>');
+            )
+        ).then(() => {
+            const htmlContent = `
+                <html>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; text-align: center; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th, td { border: 1px solid #000; padding: 8px; text-align: center; }
+                        th { background-color: #f2f2f2; }
+                        .header-container { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; }
+                        .header-container img { width: 100px; height: auto; }
+                        .header-container p { font-size: 16px; margin: 0; }
+                        .contact-info { font-size: 14px; margin-top: 10px; font-weight: normal; }
+                        @media print { @page { margin: 20px; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="header-container">
+                        <img src="${mswdIconUrl}" alt="MSWD Icon"">
+                        <p>Republic of the Philippines<br>Province of Southern Leyte<br>Municipality of Sogod</p>
+                        <img src="${sogodLogoUrl}" alt="Sogod Logo">
+                    </div>
+                    <div class="contact-info">
+                        Municipal Social Welfare and Development Office<br>
+                        Email Address: mswdlgusogod@gmail.com<br>
+                        Office Cell Number: 09090172012
+                    </div>
+                    <h3>Generated Report</h3>
+                    <table><thead>
+                        ${visibleHeaders
+                            .get()
+                            .map(function (header) {
+                                return '<th>' + $(header).html() + '</th>';
+                            })
+                            .join('')}
+                    </thead><tbody>
+                        ${visibleContent}
+                    </tbody></table>
+                </body>
+                </html>`;
 
-        printWindow.document.close();
+            iframe.srcdoc = htmlContent;
 
-        printWindow.onload = function () {
-            printWindow.print();
-            printWindow.close();
-        };
+            iframe.onload = function () {
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                }, 1000);
+            };
+        });
     });
 });
