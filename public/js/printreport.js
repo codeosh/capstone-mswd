@@ -97,4 +97,152 @@ $(document).ready(function () {
             };
         });
     });
+    // End of Print function button
+
+    // Generate Report Functionalities
+    $('#filterButtonReport').on('click', function () {
+        const serviceType = $('#selectReportFilterType').val();
+        const startDate = $('#filterReportStartDate').val();
+        const endDate = $('#filterReportEndDate').val();
+        $('#rowsPerPage').val(10);
+
+        if (!serviceType) {
+            showToast('Please select a Filter Type', 'danger');
+            return;
+        }
+
+        filterBeneficiaries(serviceType, startDate, endDate);
+    });
+    $('#clearButtonReport').on('click', function () {
+        $('#selectReportFilterType').val('');
+        $('#filterReportStartDate').val('');
+        $('#filterReportEndDate').val('');
+        $('#rowsPerPage').val(10);
+
+        filterBeneficiaries();
+    });
+
+    $('#rowsPerPage').change(function () {
+        const perPage = $(this).val();
+        const serviceType = $('#selectReportFilterType').val();
+        const startDate = $('#filterReportStartDate').val();
+        const endDate = $('#filterReportEndDate').val();
+
+        filterBeneficiaries(serviceType, startDate, endDate, perPage);
+    });
+
+    function filterBeneficiaries(
+        serviceType = '',
+        startDate = '',
+        endDate = '',
+        perPage = 10
+    ) {
+        const tableBody = $('.reportTableContainer');
+        tableBody.html(
+            '<tr><td colspan="8" class="text-center">Loading...</td></tr>'
+        );
+
+        $.ajax({
+            url: '/generate-report/filter',
+            type: 'GET',
+            data: {
+                reportFilterType: serviceType,
+                startDate,
+                endDate,
+                perPage,
+            },
+            success: function (response) {
+                if (response.success && response.data.length > 0) {
+                    populateBeneficiaryTable(response.data, serviceType);
+                } else {
+                    tableBody.html(
+                        '<tr><td colspan="8" class="text-center">No beneficiaries found.</td></tr>'
+                    );
+                }
+            },
+            error: function () {
+                tableBody.html(
+                    '<tr><td colspan="8" class="text-center text-danger">An error occurred while fetching data.</td></tr>'
+                );
+            },
+        });
+    }
+
+    function populateBeneficiaryTable(beneficiaries, serviceType = '') {
+        const tableBody = $('.reportTableContainer');
+
+        if (serviceType === 'Solo Parent') {
+            $('#categoryHeader').removeClass('d-none');
+            $('#remarksHeader').removeClass('d-none');
+            $('#sexHeader').addClass('d-none');
+            $('#birthdateHeader').addClass('d-none');
+            $('#statusHeader').addClass('d-none');
+        } else {
+            $('#categoryHeader').addClass('d-none');
+            $('#remarksHeader').addClass('d-none');
+            $('#sexHeader').removeClass('d-none');
+            $('#birthdateHeader').removeClass('d-none');
+            $('#statusHeader').removeClass('d-none');
+        }
+
+        // Generate table rows
+        const rows = beneficiaries
+            .map((beneficiary, index) => {
+                const birthDate = new Date(beneficiary.birthdate);
+                const age = new Date().getFullYear() - birthDate.getFullYear();
+                const barangay = beneficiary.address
+                    ? beneficiary.address.barangay
+                    : 'N/A';
+
+                const category =
+                    beneficiary.category && beneficiary.category.trim() !== ''
+                        ? beneficiary.category
+                        : 'N/A';
+                const remarks =
+                    beneficiary.remarks && beneficiary.remarks.trim() !== ''
+                        ? beneficiary.remarks
+                        : 'N/A';
+
+                if (serviceType === 'Solo Parent') {
+                    return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${beneficiary.id_num}</td>
+                        <td>${beneficiary.firstname} ${
+                        beneficiary.middlename || ''
+                    } ${beneficiary.lastname} ${beneficiary.suffix || ''}</td>
+                        <td>${barangay}</td>
+                        <td>${age}</td>
+                        <td>${category}</td>
+                        <td>${remarks}</td>
+                    </tr>
+                `;
+                } else {
+                    return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${beneficiary.id_num}</td>
+                        <td>${beneficiary.firstname} ${
+                        beneficiary.middlename || ''
+                    } ${beneficiary.lastname} ${beneficiary.suffix || ''}</td>
+                        <td>${barangay}</td>
+                        <td>${beneficiary.sex}</td>
+                        <td>${birthDate.toLocaleDateString('en-US', {
+                            month: 'long',
+                            day: '2-digit',
+                            year: 'numeric',
+                        })}</td>
+                        <td>${age}</td>
+                        <td>${beneficiary.status}</td>
+                    </tr>
+                `;
+                }
+            })
+            .join('');
+
+        console.log('Generated rows:', rows);
+
+        tableBody.html(rows);
+    }
+    // End of Generate Report Functionalities
 });
