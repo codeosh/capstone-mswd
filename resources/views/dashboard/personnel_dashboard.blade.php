@@ -65,6 +65,17 @@
         </div>
     </div>
 </div>
+<div class="card mt-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 shadow p-3">
+                <label for="pieChart" class="form-label">Beneficiary Demographics Overview:</label>
+                <div class="border" id="pieChart" style="width: 100%; height: 400px;"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 {{-- Scripts Compiled --}}
 <script src="{{asset('js/mapchart.js')}}"></script>

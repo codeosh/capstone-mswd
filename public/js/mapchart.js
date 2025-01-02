@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
         })
         .then((data) => {
-            const barangayData = data.barangayData; // Access barangayData correctly
+            const barangayData = data.barangayData;
             if (!Array.isArray(barangayData)) {
                 console.error(
                     'Expected barangayData to be an array, but got:',
@@ -155,8 +155,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const barangayData = data.barangayData;
             const yearlyTrendData = data.yearlyTrendData;
 
-            // Prepare data for Line Chart (Total Beneficiaries per Service/Status per Barangay)
             const lineChartData = [
+                { name: 'Solo Parent', data: [] },
                 { name: 'AICS', data: [] },
                 { name: 'VAW', data: [] },
                 { name: 'VAC', data: [] },
@@ -165,11 +165,12 @@ document.addEventListener('DOMContentLoaded', function () {
             ];
 
             barangayData.forEach((barangay) => {
-                lineChartData[0].data.push(barangay.aics_count);
-                lineChartData[1].data.push(barangay.vaw_count);
-                lineChartData[2].data.push(barangay.vac_count);
-                lineChartData[3].data.push(barangay.car_count);
-                lineChartData[4].data.push(barangay.cicl_count);
+                lineChartData[0].data.push(barangay.solo_parent_count);
+                lineChartData[1].data.push(barangay.aics_count);
+                lineChartData[2].data.push(barangay.vaw_count);
+                lineChartData[3].data.push(barangay.vac_count);
+                lineChartData[4].data.push(barangay.car_count);
+                lineChartData[5].data.push(barangay.cicl_count);
             });
 
             // Initialize Line Chart
@@ -192,8 +193,8 @@ document.addEventListener('DOMContentLoaded', function () {
             );
             lineChart.render();
 
-            // Prepare data for Bar Chart (Service Trend by Year)
             const barChartData = [
+                { name: 'Solo Parent', data: [] },
                 { name: 'AICS', data: [] },
                 { name: 'VAW', data: [] },
                 { name: 'VAC', data: [] },
@@ -202,11 +203,12 @@ document.addEventListener('DOMContentLoaded', function () {
             ];
 
             yearlyTrendData.forEach((trend) => {
-                barChartData[0].data.push(trend.aics_count);
-                barChartData[1].data.push(trend.vaw_count);
-                barChartData[2].data.push(trend.vac_count);
-                barChartData[3].data.push(trend.car_count);
-                barChartData[4].data.push(trend.cicl_count);
+                barChartData[0].data.push(trend.solo_parent_count);
+                barChartData[1].data.push(trend.aics_count);
+                barChartData[2].data.push(trend.vaw_count);
+                barChartData[3].data.push(trend.vac_count);
+                barChartData[4].data.push(trend.car_count);
+                barChartData[5].data.push(trend.cicl_count);
             });
 
             // Initialize Bar Chart
@@ -226,6 +228,40 @@ document.addEventListener('DOMContentLoaded', function () {
                 barOptions
             );
             barChart.render();
+
+            fetch('/getBarangayData')
+                .then((response) => response.json())
+                .then((data) => {
+                    const sexDistribution = data.sexDistribution;
+                    console.log('Sex Distribution:', sexDistribution);
+
+                    const pieData = [
+                        Number(sexDistribution.male_count),
+                        Number(sexDistribution.female_count),
+                        Number(sexDistribution.children_count),
+                        Number(sexDistribution.senior_count),
+                    ];
+                    console.log('Pie Data:', pieData);
+
+                    var pieOptions = {
+                        chart: { type: 'pie', height: 400 },
+                        series: pieData,
+                        labels: [
+                            'Male',
+                            'Female',
+                            'Children (<18)',
+                            'Senior Citizen (>60)',
+                        ],
+                    };
+
+                    new ApexCharts(
+                        document.querySelector('#pieChart'),
+                        pieOptions
+                    ).render();
+                })
+                .catch((error) => {
+                    console.error('Error fetching data:', error);
+                });
         })
         .catch((error) => {
             console.error('Error fetching barangay data:', error);
