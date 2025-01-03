@@ -53,7 +53,6 @@
                         <label for="serviceEndDate">End Date</label>
                     </div>
 
-                    <button type="button" id="filterMapButton" class="btn btn-primary">Filter</button>
                     <button type="button" id="clearFilterMapButton" class="btn btn-secondary">Clear</button>
                 </div>
             </div>
