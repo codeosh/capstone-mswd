@@ -91,9 +91,29 @@ document.addEventListener('DOMContentLoaded', function () {
                         div.style.boxShadow = '0 0 5px rgba(0, 0, 0, 0.5)';
                         div.style.fontSize = '12px';
 
+                        // Define the ranges for the legend
                         var grades = [0, 5, 10, 20, 50, 100];
 
-                        for (var i = 0; i < grades.length; i++) {
+                        // Add the color for 0
+                        div.innerHTML +=
+                            '<div style="display: flex; align-items: center; margin-bottom: 5px;">' +
+                            '<i style="background:' +
+                            getColor(0) + // For the 0 range
+                            '; width: 20px; height: 20px; margin-right: 5px;"></i>' +
+                            '<span>0</span>' +
+                            '</div>';
+
+                        // Add the 0-5 range with color #FEB24C
+                        div.innerHTML +=
+                            '<div style="display: flex; align-items: center; margin-bottom: 5px;">' +
+                            '<i style="background:' +
+                            getColor(1) + // For the 0-5 range (we use value 1 here for the color)
+                            '; width: 20px; height: 20px; margin-right: 5px;"></i>' +
+                            '<span>0–5</span>' +
+                            '</div>';
+
+                        // Loop through the grades and adjust the color for each range
+                        for (var i = 1; i < grades.length; i++) {
                             div.innerHTML +=
                                 '<div style="display: flex; align-items: center; margin-bottom: 5px;">' +
                                 '<i style="background:' +
@@ -102,11 +122,12 @@ document.addEventListener('DOMContentLoaded', function () {
                                 '<span>' +
                                 grades[i] +
                                 (grades[i + 1]
-                                    ? '&ndash;' + grades[i + 1] + ''
+                                    ? '&ndash;' + grades[i + 1]
                                     : '+') +
                                 '</span>' +
                                 '</div>';
                         }
+
                         return div;
                     };
 
@@ -123,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to get color based on service count
     function getColor(value) {
+        if (value === 0) return '#FFEDA0';
         return value > 100
             ? '#800026'
             : value > 50
@@ -133,9 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
             ? '#FC4E2A'
             : value > 5
             ? '#FD8D3C'
-            : value > 0
-            ? '#FEB24C'
-            : '#FFEDA0';
+            : '#FEB24C';
     }
 
     fetch('/getBarangayData')
