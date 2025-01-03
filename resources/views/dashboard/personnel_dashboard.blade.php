@@ -11,7 +11,7 @@
 <div class="card">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="input-group">
                     <!-- Dropdown -->
                     <div class="form-floating">
@@ -25,6 +25,18 @@
                             <option value="Solo Parent">Solo Parent</option>
                         </select>
                         <label for="selectMapFilterType">Filter Type</label>
+                    </div>
+                    <div class="form-floating">
+                        <select id="selectMonthFilter" name="selectMonthFilter" class="form-select">
+                            <option value="">Select Month</option>
+                        </select>
+                        <label for="selectMonthFilter">Month</label>
+                    </div>
+                    <div class="form-floating">
+                        <select id="selectYearFilter" name="selectYearFilter" class="form-select">
+                            <option value="">Select Year</option>
+                        </select>
+                        <label for="selectYearFilter">Year</label>
                     </div>
 
                     <!-- Start Date -->
@@ -40,6 +52,9 @@
                             placeholder="End Date" aria-label="End Date" />
                         <label for="serviceEndDate">End Date</label>
                     </div>
+
+                    <button type="button" id="filterMapButton" class="btn btn-primary">Filter</button>
+                    <button type="button" id="clearFilterMapButton" class="btn btn-secondary">Clear</button>
                 </div>
             </div>
             <div class="text-white shadow p-2 rounded bg-dark text-center" style="width: 150px;" id="clock"></div>
@@ -89,5 +104,6 @@
 
 {{-- Scripts Compiled --}}
 <script src="{{asset('js/mapchart.js')}}"></script>
+<script src="{{asset('js/filterAnalytics.js')}}"></script>
 <script src="{{asset('js/clock.js')}}"></script>
 @endsection

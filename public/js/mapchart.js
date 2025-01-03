@@ -138,16 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
             : '#FFEDA0';
     }
 
-    // Add event listener for the filter dropdown
-    var filterServiceMap = document.getElementById('filterServiceMap');
-    if (filterServiceMap) {
-        filterServiceMap.addEventListener('change', function () {
-            var selectedFilter = this.value;
-            console.log('Selected Filter:', selectedFilter);
-            // Add your filtering logic here
-        });
-    }
-
     fetch('/getBarangayData')
         .then((response) => response.json())
         .then((data) => {
