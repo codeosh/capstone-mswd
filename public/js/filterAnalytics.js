@@ -1,24 +1,5 @@
 // public\js\filterAnalytics.js
 $(document).ready(function () {
-    // Populate months
-    const months = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-    ];
-    months.forEach(function (month, index) {
-        $('#selectMonthFilter').append(new Option(month, index + 1));
-    });
-
     const currentYear = new Date().getFullYear();
 
     for (let year = currentYear; year >= 2020; year--) {

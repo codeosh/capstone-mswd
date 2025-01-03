@@ -29,6 +29,18 @@
                     <div class="form-floating">
                         <select id="selectMonthFilter" name="selectMonthFilter" class="form-select">
                             <option value="">Select Month</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
                         </select>
                         <label for="selectMonthFilter">Month</label>
                     </div>
@@ -39,20 +51,7 @@
                         <label for="selectYearFilter">Year</label>
                     </div>
 
-                    <!-- Start Date -->
-                    <div class="form-floating">
-                        <input type="date" id="filterMapStartDate" name="mapStartDate" class="form-control"
-                            placeholder="Start Date" aria-label="Start Date" />
-                        <label for="serviceStartDate">Start Date</label>
-                    </div>
-
-                    <!-- End Date -->
-                    <div class="form-floating">
-                        <input type="date" id="filterMapEndDate" name="mapEndDate" class="form-control"
-                            placeholder="End Date" aria-label="End Date" />
-                        <label for="serviceEndDate">End Date</label>
-                    </div>
-
+                    <button type="button" id="applyFilterButton" class="btn btn-primary">Filter</button>
                     <button type="button" id="clearFilterMapButton" class="btn btn-secondary">Clear</button>
                 </div>
             </div>

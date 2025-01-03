@@ -221,7 +221,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then((response) => response.json())
                 .then((data) => {
                     const sexDistribution = data.sexDistribution;
-                    console.log('Sex Distribution:', sexDistribution);
 
                     const pieData = [
                         Number(sexDistribution.male_count),
@@ -229,7 +228,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         Number(sexDistribution.children_count),
                         Number(sexDistribution.senior_count),
                     ];
-                    console.log('Pie Data:', pieData);
 
                     var pieOptions = {
                         chart: { type: 'pie', height: 400 },

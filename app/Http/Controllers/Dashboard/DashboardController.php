@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Beneficiary;
-use App\Models\Service;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -46,7 +44,7 @@ class DashboardController extends Controller
                 ->get();
 
             // Fetch sex distribution data for Pie Chart
-            $currentDate = now()->toDateString(); // Convert to string for compatibility
+            $currentDate = now()->toDateString();
             $sexDistribution = DB::table('beneficiaries')
                 ->select(
                     DB::raw('SUM(CASE WHEN sex = "Male" THEN 1 ELSE 0 END) as male_count'),
