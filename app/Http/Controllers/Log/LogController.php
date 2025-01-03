@@ -11,7 +11,6 @@ class LogController extends Controller
     public function getBeneficiaryTableData()
     {
         try {
-            // Fetch beneficiaries along with the associated user and dates
             $beneficiaries = DB::table('beneficiaries')
                 ->join('users', 'beneficiaries.user_id', '=', 'users.id')
                 ->select(
@@ -20,6 +19,7 @@ class LogController extends Controller
                     'beneficiaries.created_at as date_added',
                     'beneficiaries.updated_at as date_updated'
                 )
+                ->orderBy('beneficiaries.created_at', 'desc')
                 ->get();
 
             return response()->json(['beneficiaries' => $beneficiaries]);

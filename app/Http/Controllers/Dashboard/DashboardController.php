@@ -24,18 +24,23 @@ class DashboardController extends Controller
     {
         try {
             // Fetch the necessary data for services and status
-            $barangayData = DB::table('beneficiaries')
-                ->join('addresses', 'beneficiaries.id', '=', 'addresses.beneficiary_id')
-                ->leftJoin('services', 'beneficiaries.id', '=', 'services.beneficiary_id')
+            $barangayData = DB::table('addresses')
+                ->join('beneficiaries', 'beneficiaries.id', '=', 'addresses.beneficiary_id')
+                ->leftJoin(
+                    DB::raw('(SELECT DISTINCT beneficiary_id, service_name FROM services) as distinct_services'),
+                    'beneficiaries.id',
+                    '=',
+                    'distinct_services.beneficiary_id'
+                )
                 ->select(
                     'addresses.barangay',
-                    DB::raw('COUNT(beneficiaries.id) as total_beneficiaries'),
-                    DB::raw('SUM(CASE WHEN beneficiaries.status = "Solo Parent" THEN 1 ELSE 0 END) as solo_parent_count'),
-                    DB::raw('SUM(CASE WHEN services.service_name = "AICS" THEN 1 ELSE 0 END) as aics_count'),
-                    DB::raw('SUM(CASE WHEN services.service_name = "VAW" THEN 1 ELSE 0 END) as vaw_count'),
-                    DB::raw('SUM(CASE WHEN services.service_name = "VAC" THEN 1 ELSE 0 END) as vac_count'),
-                    DB::raw('SUM(CASE WHEN services.service_name = "CAR" THEN 1 ELSE 0 END) as car_count'),
-                    DB::raw('SUM(CASE WHEN services.service_name = "CICL" THEN 1 ELSE 0 END) as cicl_count')
+                    DB::raw('COUNT(DISTINCT beneficiaries.id) as total_beneficiaries'),
+                    DB::raw('COUNT(DISTINCT CASE WHEN beneficiaries.status = "Solo Parent" THEN beneficiaries.id ELSE NULL END) as solo_parent_count'),
+                    DB::raw('SUM(CASE WHEN distinct_services.service_name = "AICS" THEN 1 ELSE 0 END) as aics_count'),
+                    DB::raw('SUM(CASE WHEN distinct_services.service_name = "VAW" THEN 1 ELSE 0 END) as vaw_count'),
+                    DB::raw('SUM(CASE WHEN distinct_services.service_name = "VAC" THEN 1 ELSE 0 END) as vac_count'),
+                    DB::raw('SUM(CASE WHEN distinct_services.service_name = "CAR" THEN 1 ELSE 0 END) as car_count'),
+                    DB::raw('SUM(CASE WHEN distinct_services.service_name = "CICL" THEN 1 ELSE 0 END) as cicl_count')
                 )
                 ->groupBy('addresses.barangay')
                 ->get();

@@ -92,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         div.style.fontSize = '12px';
 
                         var grades = [0, 5, 10, 20, 50, 100];
-                        var labels = [];
 
                         for (var i = 0; i < grades.length; i++) {
                             div.innerHTML +=
