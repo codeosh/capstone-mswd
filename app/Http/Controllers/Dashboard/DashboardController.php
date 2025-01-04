@@ -18,14 +18,18 @@ class DashboardController extends Controller
         return view('dashboard.personnel_dashboard');
     }
 
-    public function getBarangayData()
+    public function getBarangayData(Request $request)
     {
         try {
+            $filterType = $request->query('mapFilterType');
+            $month = $request->query('selectMonthFilter');
+            $year = $request->query('selectYearFilter');
+
             // Fetch the necessary data for services and status
-            $barangayData = DB::table('addresses')
+            $query = DB::table('addresses')
                 ->join('beneficiaries', 'beneficiaries.id', '=', 'addresses.beneficiary_id')
                 ->leftJoin(
-                    DB::raw('(SELECT DISTINCT beneficiary_id, service_name FROM services) as distinct_services'),
+                    DB::raw('(SELECT DISTINCT beneficiary_id, service_name, MONTH(created_at) as service_month, YEAR(created_at) as service_year, created_at FROM services) as distinct_services'),
                     'beneficiaries.id',
                     '=',
                     'distinct_services.beneficiary_id'
@@ -40,8 +44,22 @@ class DashboardController extends Controller
                     DB::raw('SUM(CASE WHEN distinct_services.service_name = "CAR" THEN 1 ELSE 0 END) as car_count'),
                     DB::raw('SUM(CASE WHEN distinct_services.service_name = "CICL" THEN 1 ELSE 0 END) as cicl_count')
                 )
-                ->groupBy('addresses.barangay')
-                ->get();
+                ->groupBy('addresses.barangay');
+
+            // Apply filters
+            if ($filterType) {
+                $query->where('distinct_services.service_name', $filterType);
+            }
+
+            if ($month) {
+                $query->where(DB::raw('MONTH(distinct_services.created_at)'), '=', $month);
+            }
+
+            if ($year) {
+                $query->where(DB::raw('YEAR(distinct_services.created_at)'), '=', $year);
+            }
+
+            $barangayData = $query->get();
 
             // Fetch sex distribution data for Pie Chart
             $currentDate = now()->toDateString();
@@ -53,7 +71,6 @@ class DashboardController extends Controller
                     DB::raw("SUM(CASE WHEN TIMESTAMPDIFF(YEAR, birthdate, '$currentDate') > 60 THEN 1 ELSE 0 END) as senior_count")
                 )
                 ->first();
-
 
             // Fetch yearly trend data per service/status (for Bar Chart)
             $yearlyTrendData = DB::table('beneficiaries')

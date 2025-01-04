@@ -137,6 +137,177 @@ document.addEventListener('DOMContentLoaded', function () {
             : '#FEB24C';
     }
 
+    // Function to filter map data based on selected filters
+    function filterMapData() {
+        const filterType = document.getElementById('selectMapFilterType').value;
+        const monthFilter = document.getElementById('selectMonthFilter').value;
+        const yearFilter = document.getElementById('selectYearFilter').value;
+
+        fetch(
+            `/getBarangayData?mapFilterType=${filterType}&selectMonthFilter=${monthFilter}&selectYearFilter=${yearFilter}`
+        )
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch filtered barangay data');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                const barangayData = data.barangayData;
+
+                // Clear existing map layers
+                map.eachLayer((layer) => {
+                    if (layer !== solidColorLayer) {
+                        map.removeLayer(layer);
+                    }
+                });
+
+                // Reload GeoJSON with filtered data
+                fetch('/mapping/Sogod_Brgys.geojson')
+                    .then((response) => response.json())
+                    .then((geoJsonData) => {
+                        L.geoJson(geoJsonData, {
+                            style: function (feature) {
+                                const barangayInfo = barangayData.find(
+                                    (barangay) =>
+                                        barangay.barangay ===
+                                        feature.properties.ADM4_EN
+                                );
+                                const serviceCount = barangayInfo
+                                    ? barangayInfo.total_beneficiaries
+                                    : 0;
+                                return {
+                                    fillColor: getColor(serviceCount),
+                                    weight: 2,
+                                    opacity: 1,
+                                    color: 'white',
+                                    fillOpacity: 1,
+                                    className: 'mapEffects',
+                                };
+                            },
+                            onEachFeature: function (feature, layer) {
+                                const barangayInfo = barangayData.find(
+                                    (barangay) =>
+                                        barangay.barangay ===
+                                        feature.properties.ADM4_EN
+                                );
+
+                                if (barangayInfo) {
+                                    layer.bindPopup(
+                                        `<b>Barangay:</b> ${feature.properties.ADM4_EN}<br>` +
+                                            `<b>Total Beneficiaries:</b> ${barangayInfo.total_beneficiaries}<br>` +
+                                            `<b>${filterType} Count:</b> ${
+                                                barangayInfo[
+                                                    `${filterType.toLowerCase()}_count`
+                                                ]
+                                            }`
+                                    );
+                                }
+                            },
+                        }).addTo(map);
+                    })
+                    .catch((error) =>
+                        console.error('Error loading GeoJSON:', error)
+                    );
+            })
+            .catch((error) => {
+                console.error('Error fetching filtered barangay data:', error);
+                alert('Failed to load filtered barangay data.');
+            });
+    }
+
+    // Attach the filter function to the filter button
+    document
+        .getElementById('applyFilterButton')
+        .addEventListener('click', filterMapData);
+
+    document
+        .getElementById('clearFilterMapButton')
+        .addEventListener('click', () => {
+            // Reset filter inputs
+            document.getElementById('selectMapFilterType').value = '';
+            document.getElementById('selectMonthFilter').value = '';
+            document.getElementById('selectYearFilter').value = '';
+
+            // Clear existing map layers
+            map.eachLayer((layer) => {
+                if (layer !== solidColorLayer) {
+                    map.removeLayer(layer);
+                }
+            });
+
+            // Reinitialize the default map view
+            fetch('/getBarangayData')
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch barangay data');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    const barangayData = data.barangayData;
+                    if (!Array.isArray(barangayData)) {
+                        console.error(
+                            'Expected barangayData to be an array, but got:',
+                            barangayData
+                        );
+                        return;
+                    }
+                    fetch('/mapping/Sogod_Brgys.geojson')
+                        .then((response) => response.json())
+                        .then((geoJsonData) => {
+                            L.geoJson(geoJsonData, {
+                                style: function (feature) {
+                                    const barangayInfo = barangayData.find(
+                                        (barangay) =>
+                                            barangay.barangay ===
+                                            feature.properties.ADM4_EN
+                                    );
+                                    const serviceCount = barangayInfo
+                                        ? barangayInfo.total_beneficiaries
+                                        : 0;
+                                    return {
+                                        fillColor: getColor(serviceCount),
+                                        weight: 2,
+                                        opacity: 1,
+                                        color: 'white',
+                                        fillOpacity: 1,
+                                        className: 'mapEffects',
+                                    };
+                                },
+                                onEachFeature: function (feature, layer) {
+                                    const barangayInfo = barangayData.find(
+                                        (barangay) =>
+                                            barangay.barangay ===
+                                            feature.properties.ADM4_EN
+                                    );
+
+                                    if (barangayInfo) {
+                                        layer.bindPopup(
+                                            `<b>Barangay:</b> ${feature.properties.ADM4_EN}<br>` +
+                                                `<b>Total Beneficiaries:</b> ${barangayInfo.total_beneficiaries}<br>` +
+                                                `<b>Solo Parent Count:</b> ${barangayInfo.solo_parent_count}<br>` +
+                                                `<b>AICS Services:</b> ${barangayInfo.aics_count}<br>` +
+                                                `<b>VAW Services:</b> ${barangayInfo.vaw_count}<br>` +
+                                                `<b>VAC Services:</b> ${barangayInfo.vac_count}<br>` +
+                                                `<b>CAR Services:</b> ${barangayInfo.car_count}<br>` +
+                                                `<b>CICL Services:</b> ${barangayInfo.cicl_count}`
+                                        );
+                                    }
+                                },
+                            }).addTo(map);
+                        })
+                        .catch((error) =>
+                            console.error('Error loading GeoJSON:', error)
+                        );
+                })
+                .catch((error) => {
+                    console.error('Error fetching barangay data:', error);
+                    alert('Failed to load barangay data.');
+                });
+        });
+
+    // Functions for Charts
     fetch('/getBarangayData')
         .then((response) => response.json())
         .then((data) => {
