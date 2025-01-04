@@ -75,13 +75,13 @@ class DashboardController extends Controller
             // Fetch yearly trend data per service/status (for Bar Chart)
             $yearlyTrendData = DB::table('beneficiaries')
                 ->leftJoin(
-                    DB::raw('(SELECT DISTINCT beneficiary_id, service_name FROM services) as distinct_services'),
+                    DB::raw('(SELECT DISTINCT beneficiary_id, service_name, MONTH(created_at) as service_month, YEAR(created_at) as service_year FROM services) as distinct_services'),
                     'beneficiaries.id',
                     '=',
                     'distinct_services.beneficiary_id'
                 )
                 ->select(
-                    DB::raw('YEAR(beneficiaries.created_at) as year'),
+                    DB::raw('distinct_services.service_year as year'), // Use service_year from the subquery
                     DB::raw('COUNT(DISTINCT CASE WHEN beneficiaries.status = "Solo Parent" THEN beneficiaries.id ELSE NULL END) as solo_parent_count'),
                     DB::raw('SUM(CASE WHEN distinct_services.service_name = "AICS" THEN 1 ELSE 0 END) as aics_count'),
                     DB::raw('SUM(CASE WHEN distinct_services.service_name = "VAW" THEN 1 ELSE 0 END) as vaw_count'),
@@ -89,8 +89,22 @@ class DashboardController extends Controller
                     DB::raw('SUM(CASE WHEN distinct_services.service_name = "CAR" THEN 1 ELSE 0 END) as car_count'),
                     DB::raw('SUM(CASE WHEN distinct_services.service_name = "CICL" THEN 1 ELSE 0 END) as cicl_count')
                 )
-                ->groupBy(DB::raw('YEAR(beneficiaries.created_at)'))
+                ->whereNotNull('distinct_services.service_year') // Exclude records with null year
+                ->groupBy('distinct_services.service_year')
                 ->get();
+
+            if ($month) {
+                // Use the alias `service_month` instead of `created_at`
+                $yearlyTrendData->where('distinct_services.service_month', '=', $month);
+            }
+
+            if ($year) {
+                // Use the alias `service_year` instead of `created_at`
+                $yearlyTrendData->where('distinct_services.service_year', '=', $year);
+            }
+
+
+
 
             return response()->json([
                 'barangayData' => $barangayData,
