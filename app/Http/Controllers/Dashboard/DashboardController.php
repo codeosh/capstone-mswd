@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -24,6 +25,7 @@ class DashboardController extends Controller
             $filterType = $request->query('mapFilterType');
             $month = $request->query('selectMonthFilter');
             $year = $request->query('selectYearFilter');
+            Log::info('Selected Year:', ['year' => $year]);
 
             // Fetch the necessary data for services and status
             $query = DB::table('addresses')
@@ -93,18 +95,10 @@ class DashboardController extends Controller
                 ->groupBy('distinct_services.service_year')
                 ->get();
 
-            if ($month) {
-                // Use the alias `service_month` instead of `created_at`
-                $yearlyTrendData->where('distinct_services.service_month', '=', $month);
-            }
-
             if ($year) {
                 // Use the alias `service_year` instead of `created_at`
                 $yearlyTrendData->where('distinct_services.service_year', '=', $year);
             }
-
-
-
 
             return response()->json([
                 'barangayData' => $barangayData,

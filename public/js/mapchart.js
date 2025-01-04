@@ -216,97 +216,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Attach the filter function to the filter button
-    document
-        .getElementById('applyFilterButton')
-        .addEventListener('click', filterMapData);
-
-    document
-        .getElementById('clearFilterMapButton')
-        .addEventListener('click', () => {
-            // Reset filter inputs
-            document.getElementById('selectMapFilterType').value = '';
-            document.getElementById('selectMonthFilter').value = '';
-            document.getElementById('selectYearFilter').value = '';
-
-            // Clear existing map layers
-            map.eachLayer((layer) => {
-                if (layer !== solidColorLayer) {
-                    map.removeLayer(layer);
-                }
-            });
-
-            // Reinitialize the default map view
-            fetch('/getBarangayData')
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch barangay data');
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    const barangayData = data.barangayData;
-                    if (!Array.isArray(barangayData)) {
-                        console.error(
-                            'Expected barangayData to be an array, but got:',
-                            barangayData
-                        );
-                        return;
-                    }
-                    fetch('/mapping/Sogod_Brgys.geojson')
-                        .then((response) => response.json())
-                        .then((geoJsonData) => {
-                            L.geoJson(geoJsonData, {
-                                style: function (feature) {
-                                    const barangayInfo = barangayData.find(
-                                        (barangay) =>
-                                            barangay.barangay ===
-                                            feature.properties.ADM4_EN
-                                    );
-                                    const serviceCount = barangayInfo
-                                        ? barangayInfo.total_beneficiaries
-                                        : 0;
-                                    return {
-                                        fillColor: getColor(serviceCount),
-                                        weight: 2,
-                                        opacity: 1,
-                                        color: 'white',
-                                        fillOpacity: 1,
-                                        className: 'mapEffects',
-                                    };
-                                },
-                                onEachFeature: function (feature, layer) {
-                                    const barangayInfo = barangayData.find(
-                                        (barangay) =>
-                                            barangay.barangay ===
-                                            feature.properties.ADM4_EN
-                                    );
-
-                                    if (barangayInfo) {
-                                        layer.bindPopup(
-                                            `<b>Barangay:</b> ${feature.properties.ADM4_EN}<br>` +
-                                                `<b>Total Beneficiaries:</b> ${barangayInfo.total_beneficiaries}<br>` +
-                                                `<b>Solo Parent Count:</b> ${barangayInfo.solo_parent_count}<br>` +
-                                                `<b>AICS Services:</b> ${barangayInfo.aics_count}<br>` +
-                                                `<b>VAW Services:</b> ${barangayInfo.vaw_count}<br>` +
-                                                `<b>VAC Services:</b> ${barangayInfo.vac_count}<br>` +
-                                                `<b>CAR Services:</b> ${barangayInfo.car_count}<br>` +
-                                                `<b>CICL Services:</b> ${barangayInfo.cicl_count}`
-                                        );
-                                    }
-                                },
-                            }).addTo(map);
-                        })
-                        .catch((error) =>
-                            console.error('Error loading GeoJSON:', error)
-                        );
-                })
-                .catch((error) => {
-                    console.error('Error fetching barangay data:', error);
-                    alert('Failed to load barangay data.');
-                });
-        });
-
     // Functions for Charts
     fetch('/getBarangayData')
         .then((response) => response.json())
@@ -387,6 +296,242 @@ document.addEventListener('DOMContentLoaded', function () {
                 barOptions
             );
             barChart.render();
+
+            function applyYearFilter(year) {
+                // Fetch the filtered data from the backend
+                fetch(`/getBarangayData?selectYearFilter=${year}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        let yearlyTrendData = data.yearlyTrendData;
+
+                        if (year) {
+                            yearlyTrendData = yearlyTrendData.filter(
+                                (trend) => trend.year == year
+                            );
+                        }
+                        const barChartData = [
+                            { name: 'Solo Parent', data: [] },
+                            { name: 'AICS', data: [] },
+                            { name: 'VAW', data: [] },
+                            { name: 'VAC', data: [] },
+                            { name: 'CAR', data: [] },
+                            { name: 'CICL', data: [] },
+                        ];
+
+                        yearlyTrendData.forEach((trend) => {
+                            barChartData[0].data.push(trend.solo_parent_count);
+                            barChartData[1].data.push(trend.aics_count);
+                            barChartData[2].data.push(trend.vaw_count);
+                            barChartData[3].data.push(trend.vac_count);
+                            barChartData[4].data.push(trend.car_count);
+                            barChartData[5].data.push(trend.cicl_count);
+                        });
+
+                        var barOptions = {
+                            chart: {
+                                type: 'bar',
+                                height: 250,
+                            },
+                            series: barChartData,
+                            xaxis: {
+                                categories: yearlyTrendData.map(
+                                    (trend) => trend.year
+                                ),
+                            },
+                        };
+
+                        if (barChart) {
+                            barChart.destroy();
+                        }
+
+                        barChart = new ApexCharts(
+                            document.querySelector('#barChart'),
+                            barOptions
+                        );
+                        barChart.render();
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching filtered data:', error);
+                    });
+            }
+
+            // Attach the filter function to the filter button
+            document
+                .getElementById('applyFilterButton')
+                .addEventListener('click', function () {
+                    const selectedYear =
+                        document.getElementById('selectYearFilter').value;
+                    filterMapData();
+                    applyYearFilter(selectedYear);
+                });
+
+            document
+                .getElementById('clearFilterMapButton')
+                .addEventListener('click', () => {
+                    // Reset filter inputs
+                    document.getElementById('selectMapFilterType').value = '';
+                    document.getElementById('selectMonthFilter').value = '';
+                    document.getElementById('selectYearFilter').value = '';
+
+                    // Clear existing map layers
+                    map.eachLayer((layer) => {
+                        if (layer !== solidColorLayer) {
+                            map.removeLayer(layer);
+                        }
+                    });
+
+                    // Reinitialize the default map view
+                    fetch('/getBarangayData')
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error(
+                                    'Failed to fetch barangay data'
+                                );
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            const barangayData = data.barangayData;
+                            if (!Array.isArray(barangayData)) {
+                                console.error(
+                                    'Expected barangayData to be an array, but got:',
+                                    barangayData
+                                );
+                                return;
+                            }
+                            fetch('/mapping/Sogod_Brgys.geojson')
+                                .then((response) => response.json())
+                                .then((geoJsonData) => {
+                                    L.geoJson(geoJsonData, {
+                                        style: function (feature) {
+                                            const barangayInfo =
+                                                barangayData.find(
+                                                    (barangay) =>
+                                                        barangay.barangay ===
+                                                        feature.properties
+                                                            .ADM4_EN
+                                                );
+                                            const serviceCount = barangayInfo
+                                                ? barangayInfo.total_beneficiaries
+                                                : 0;
+                                            return {
+                                                fillColor:
+                                                    getColor(serviceCount),
+                                                weight: 2,
+                                                opacity: 1,
+                                                color: 'white',
+                                                fillOpacity: 1,
+                                                className: 'mapEffects',
+                                            };
+                                        },
+                                        onEachFeature: function (
+                                            feature,
+                                            layer
+                                        ) {
+                                            const barangayInfo =
+                                                barangayData.find(
+                                                    (barangay) =>
+                                                        barangay.barangay ===
+                                                        feature.properties
+                                                            .ADM4_EN
+                                                );
+
+                                            if (barangayInfo) {
+                                                layer.bindPopup(
+                                                    `<b>Barangay:</b> ${feature.properties.ADM4_EN}<br>` +
+                                                        `<b>Total Beneficiaries:</b> ${barangayInfo.total_beneficiaries}<br>` +
+                                                        `<b>Solo Parent Count:</b> ${barangayInfo.solo_parent_count}<br>` +
+                                                        `<b>AICS Services:</b> ${barangayInfo.aics_count}<br>` +
+                                                        `<b>VAW Services:</b> ${barangayInfo.vaw_count}<br>` +
+                                                        `<b>VAC Services:</b> ${barangayInfo.vac_count}<br>` +
+                                                        `<b>CAR Services:</b> ${barangayInfo.car_count}<br>` +
+                                                        `<b>CICL Services:</b> ${barangayInfo.cicl_count}`
+                                                );
+                                            }
+                                        },
+                                    }).addTo(map);
+                                })
+                                .catch((error) =>
+                                    console.error(
+                                        'Error loading GeoJSON:',
+                                        error
+                                    )
+                                );
+                        })
+                        .catch((error) => {
+                            console.error(
+                                'Error fetching barangay data:',
+                                error
+                            );
+                            alert('Failed to load barangay data.');
+                        });
+
+                    fetch('/getBarangayData')
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error(
+                                    'Failed to fetch barangay data'
+                                );
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            const yearlyTrendData = data.yearlyTrendData;
+
+                            // Prepare the bar chart data with the original (unfiltered) data
+                            const barChartData = [
+                                { name: 'Solo Parent', data: [] },
+                                { name: 'AICS', data: [] },
+                                { name: 'VAW', data: [] },
+                                { name: 'VAC', data: [] },
+                                { name: 'CAR', data: [] },
+                                { name: 'CICL', data: [] },
+                            ];
+
+                            yearlyTrendData.forEach((trend) => {
+                                barChartData[0].data.push(
+                                    trend.solo_parent_count
+                                );
+                                barChartData[1].data.push(trend.aics_count);
+                                barChartData[2].data.push(trend.vaw_count);
+                                barChartData[3].data.push(trend.vac_count);
+                                barChartData[4].data.push(trend.car_count);
+                                barChartData[5].data.push(trend.cicl_count);
+                            });
+
+                            // Destroy the previous bar chart if it exists
+                            if (typeof barChart !== 'undefined') {
+                                barChart.destroy();
+                            }
+
+                            // Initialize a new bar chart with the default data
+                            const barOptions = {
+                                chart: {
+                                    type: 'bar',
+                                    height: 250,
+                                },
+                                series: barChartData,
+                                xaxis: {
+                                    categories: yearlyTrendData.map(
+                                        (trend) => trend.year
+                                    ),
+                                },
+                            };
+
+                            barChart = new ApexCharts(
+                                document.querySelector('#barChart'),
+                                barOptions
+                            );
+                            barChart.render(); // Render the bar chart with the default data
+                        })
+                        .catch((error) => {
+                            console.error(
+                                'Error fetching barangay data:',
+                                error
+                            );
+                            alert('Failed to load barangay data.');
+                        });
+                });
 
             fetch('/getBarangayData')
                 .then((response) => response.json())
