@@ -297,6 +297,88 @@ document.addEventListener('DOMContentLoaded', function () {
             );
             barChart.render();
 
+            function fetchFilteredLineChartData(filterType, month, year) {
+                // Construct the query parameters
+                const queryParams = new URLSearchParams();
+                if (filterType) queryParams.append('mapFilterType', filterType);
+                if (month) queryParams.append('selectMonthFilter', month);
+                if (year) queryParams.append('selectYearFilter', year);
+
+                // Fetch the filtered data
+                return fetch(`/getBarangayData?${queryParams.toString()}`)
+                    .then((response) => response.json())
+                    .then((data) => data.barangayData) // Return only barangayData for the line chart
+                    .catch((error) => {
+                        console.error(
+                            'Error fetching filtered line chart data:',
+                            error
+                        );
+                        return [];
+                    });
+            }
+
+            function updateLineChart(filterType, month, year) {
+                fetchFilteredLineChartData(filterType, month, year).then(
+                    (barangayData) => {
+                        const lineChartData = [
+                            { name: 'Solo Parent', data: [] },
+                            { name: 'AICS', data: [] },
+                            { name: 'VAW', data: [] },
+                            { name: 'VAC', data: [] },
+                            { name: 'CAR', data: [] },
+                            { name: 'CICL', data: [] },
+                        ];
+
+                        barangayData.forEach((barangay) => {
+                            lineChartData[0].data.push(
+                                barangay.solo_parent_count
+                            );
+                            lineChartData[1].data.push(barangay.aics_count);
+                            lineChartData[2].data.push(barangay.vaw_count);
+                            lineChartData[3].data.push(barangay.vac_count);
+                            lineChartData[4].data.push(barangay.car_count);
+                            lineChartData[5].data.push(barangay.cicl_count);
+                        });
+
+                        const lineOptions = {
+                            chart: {
+                                type: 'line',
+                                height: 250,
+                            },
+                            series: lineChartData,
+                            xaxis: {
+                                categories: barangayData.map(
+                                    (barangay) => barangay.barangay
+                                ),
+                            },
+                        };
+
+                        // Destroy and recreate the chart
+                        if (lineChart) {
+                            lineChart.destroy();
+                        }
+
+                        lineChart = new ApexCharts(
+                            document.querySelector('#lineChart'),
+                            lineOptions
+                        );
+                        lineChart.render();
+                    }
+                );
+            }
+
+            function applyLineChartFilter() {
+                const filterType = document.getElementById(
+                    'selectMapFilterType'
+                ).value;
+                const month =
+                    document.getElementById('selectMonthFilter').value;
+                const year = document.getElementById('selectYearFilter').value;
+
+                // Update the line chart with the selected filters
+                updateLineChart(filterType, month, year);
+            }
+
             function applyYearFilter(year) {
                 // Fetch the filtered data from the backend
                 fetch(`/getBarangayData?selectYearFilter=${year}`)
@@ -355,6 +437,56 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
             }
 
+            function resetLineChart(barangayData) {
+                // Validate barangayData
+                if (!Array.isArray(barangayData)) {
+                    console.error('Invalid barangayData:', barangayData);
+                    return;
+                }
+
+                const lineChartData = [
+                    { name: 'Solo Parent', data: [] },
+                    { name: 'AICS', data: [] },
+                    { name: 'VAW', data: [] },
+                    { name: 'VAC', data: [] },
+                    { name: 'CAR', data: [] },
+                    { name: 'CICL', data: [] },
+                ];
+
+                barangayData.forEach((barangay) => {
+                    lineChartData[0].data.push(barangay.solo_parent_count || 0);
+                    lineChartData[1].data.push(barangay.aics_count || 0);
+                    lineChartData[2].data.push(barangay.vaw_count || 0);
+                    lineChartData[3].data.push(barangay.vac_count || 0);
+                    lineChartData[4].data.push(barangay.car_count || 0);
+                    lineChartData[5].data.push(barangay.cicl_count || 0);
+                });
+
+                const lineOptions = {
+                    chart: {
+                        type: 'line',
+                        height: 250,
+                    },
+                    series: lineChartData,
+                    xaxis: {
+                        categories: barangayData.map(
+                            (barangay) => barangay.barangay || 'Unknown'
+                        ),
+                    },
+                };
+
+                // Destroy and recreate the line chart
+                if (typeof lineChart !== 'undefined') {
+                    lineChart.destroy();
+                }
+
+                lineChart = new ApexCharts(
+                    document.querySelector('#lineChart'),
+                    lineOptions
+                );
+                lineChart.render();
+            }
+
             // Attach the filter function to the filter button
             document
                 .getElementById('applyFilterButton')
@@ -362,6 +494,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const selectedYear =
                         document.getElementById('selectYearFilter').value;
                     filterMapData();
+                    applyLineChartFilter();
                     applyYearFilter(selectedYear);
                 });
 
@@ -399,6 +532,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 );
                                 return;
                             }
+
+                            resetLineChart(barangayData);
                             fetch('/mapping/Sogod_Brgys.geojson')
                                 .then((response) => response.json())
                                 .then((geoJsonData) => {
@@ -478,7 +613,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         .then((data) => {
                             const yearlyTrendData = data.yearlyTrendData;
 
-                            // Prepare the bar chart data with the original (unfiltered) data
                             const barChartData = [
                                 { name: 'Solo Parent', data: [] },
                                 { name: 'AICS', data: [] },
@@ -499,7 +633,6 @@ document.addEventListener('DOMContentLoaded', function () {
                                 barChartData[5].data.push(trend.cicl_count);
                             });
 
-                            // Destroy the previous bar chart if it exists
                             if (typeof barChart !== 'undefined') {
                                 barChart.destroy();
                             }
@@ -522,7 +655,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 document.querySelector('#barChart'),
                                 barOptions
                             );
-                            barChart.render(); // Render the bar chart with the default data
+                            barChart.render();
                         })
                         .catch((error) => {
                             console.error(
