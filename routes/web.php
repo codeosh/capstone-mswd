@@ -6,6 +6,7 @@ use App\Http\Controllers\Log\LogController;
 use App\Http\Controllers\Page\BeneficiaryController;
 use App\Http\Controllers\Page\CaseController;
 use App\Http\Controllers\Page\GenerateReport;
+use App\Http\Controllers\Page\PostAnnouncement;
 use App\Http\Controllers\Page\ServiceController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,4 +50,5 @@ Route::middleware(['role:personnel'])->group(function () {
     Route::get('/Sub-page/Beneficiary/Interview-Form', [CaseController::class, 'interviewform'])->name('interview.form');
     Route::get('/Page/Beneficiary/Generate-Reports', [GenerateReport::class, 'index'])->name('generate.report');
     Route::get('/Page/Beneficiary/Logs', [LogController::class, 'index'])->name('beneficiary.logs');
+    Route::get('/Page/Beneficiary/Post-Announcement', [PostAnnouncement::class, 'index'])->name('post.announcement');
 });

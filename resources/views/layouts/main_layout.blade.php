@@ -92,7 +92,7 @@
                 <a href="{{route('casemanage.page')}}" class="navbar-item">
                     <i class="fa-solid fa-scale-balanced"></i> <span class="navbar-text">Case Management</span>
                 </a>
-                <a href="#" class="navbar-item">
+                <a href="{{route('post.announcement')}}" class="navbar-item">
                     <i class="fa-solid fa-bullhorn me-2"></i> <span class="navbar-text">Announcement</span>
                 </a>
                 <a href="{{route('generate.report')}}" class="navbar-item">
