@@ -171,18 +171,31 @@ $(document).ready(function () {
     function populateBeneficiaryTable(beneficiaries, serviceType = '') {
         const tableBody = $('.reportTableContainer');
 
+        // Update visibility of columns based on serviceType
         if (serviceType === 'Solo Parent') {
             $('#categoryHeader').removeClass('d-none');
             $('#remarksHeader').removeClass('d-none');
             $('#sexHeader').addClass('d-none');
             $('#birthdateHeader').addClass('d-none');
             $('#statusHeader').addClass('d-none');
+            $(
+                '#pantawidBeneficiary, #offenseCommited, #childCasesStatus, #childCasesRemarks'
+            ).addClass('d-none');
+            $('#idnumber, #fullName').removeClass('d-none');
+        } else if (serviceType === 'CAR' || serviceType === 'CICL') {
+            $(
+                '#idnumber, #fullName, #statusHeader, #categoryHeader, #remarksHeader, #birthdateHeader'
+            ).addClass('d-none');
+            $(
+                '#pantawidBeneficiary, #offenseCommited, #childCasesStatus, #childCasesRemarks'
+            ).removeClass('d-none');
         } else {
-            $('#categoryHeader').addClass('d-none');
-            $('#remarksHeader').addClass('d-none');
-            $('#sexHeader').removeClass('d-none');
-            $('#birthdateHeader').removeClass('d-none');
-            $('#statusHeader').removeClass('d-none');
+            $(
+                '#categoryHeader, #remarksHeader, #pantawidBeneficiary, #offenseCommited, #childCasesStatus, #childCasesRemarks'
+            ).addClass('d-none');
+            $(
+                '#idnumber, #fullName, #sexHeader, #birthdateHeader, #statusHeader'
+            ).removeClass('d-none');
         }
 
         // Generate table rows
@@ -194,53 +207,58 @@ $(document).ready(function () {
                     ? beneficiary.address.barangay
                     : 'N/A';
 
-                const category =
-                    beneficiary.category && beneficiary.category.trim() !== ''
-                        ? beneficiary.category
-                        : 'N/A';
-                const remarks =
-                    beneficiary.remarks && beneficiary.remarks.trim() !== ''
-                        ? beneficiary.remarks
-                        : 'N/A';
-
                 if (serviceType === 'Solo Parent') {
+                    const category = beneficiary.category?.trim() || 'N/A';
+                    const remarks = beneficiary.remarks?.trim() || 'N/A';
                     return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${beneficiary.id_num}</td>
-                        <td>${beneficiary.firstname} ${
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${beneficiary.id_num}</td>
+                    <td>${beneficiary.firstname} ${
                         beneficiary.middlename || ''
                     } ${beneficiary.lastname} ${beneficiary.suffix || ''}</td>
-                        <td>${barangay}</td>
-                        <td>${age}</td>
-                        <td>${category}</td>
-                        <td>${remarks}</td>
-                    </tr>
-                `;
+                    <td>${barangay}</td>
+                    <td>${age}</td>
+                    <td>${category}</td>
+                    <td>${remarks}</td>
+                </tr>
+            `;
+                } else if (serviceType === 'CAR' || serviceType === 'CICL') {
+                    const childCase = beneficiary.childcases?.[0];
+                    return `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${barangay}</td>
+                    <td>${childCase?.pantawid_beneficiary || 'N/A'}</td>
+                    <td>${age}</td>
+                    <td>${beneficiary.sex}</td>
+                    <td>${childCase?.offense_committed || 'N/A'}</td>
+                    <td>${childCase?.status || 'N/A'}</td>
+                    <td>${childCase?.remarks || 'N/A'}</td>
+                </tr>
+            `;
                 } else {
                     return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${beneficiary.id_num}</td>
-                        <td>${beneficiary.firstname} ${
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${beneficiary.id_num}</td>
+                    <td>${beneficiary.firstname} ${
                         beneficiary.middlename || ''
                     } ${beneficiary.lastname} ${beneficiary.suffix || ''}</td>
-                        <td>${barangay}</td>
-                        <td>${beneficiary.sex}</td>
-                        <td>${birthDate.toLocaleDateString('en-US', {
-                            month: 'long',
-                            day: '2-digit',
-                            year: 'numeric',
-                        })}</td>
-                        <td>${age}</td>
-                        <td>${beneficiary.status}</td>
-                    </tr>
-                `;
+                    <td>${barangay}</td>
+                    <td>${beneficiary.sex}</td>
+                    <td>${birthDate.toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: '2-digit',
+                        year: 'numeric',
+                    })}</td>
+                    <td>${age}</td>
+                    <td>${beneficiary.status}</td>
+                </tr>
+            `;
                 }
             })
             .join('');
-
-        console.log('Generated rows:', rows);
 
         tableBody.html(rows);
     }

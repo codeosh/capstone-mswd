@@ -12,7 +12,7 @@ class GenerateReport extends Controller
     public function index(Request $request)
     {
         $perPage = $request->get('perPage', 10);
-        $beneficiaries = Beneficiary::with(['services', 'address'])
+        $beneficiaries = Beneficiary::with(['services', 'address', 'childcases'])
             ->limit($perPage)
             ->get();
 
@@ -47,7 +47,7 @@ class GenerateReport extends Controller
             $query->whereDate('created_at', '<=', $endDate);
         }
 
-        $beneficiaries = $query->with(['services', 'address'])
+        $beneficiaries = $query->with(['services', 'address', 'childcases'])
             ->limit($perPage)
             ->get();
 
