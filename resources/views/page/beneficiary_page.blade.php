@@ -19,9 +19,9 @@
             </div>
 
             <div class="btn-group text-nowrap" role="group" aria-label="Beneficiary actions">
-                <button class="btn btn-sm btn-outline-secondary">
+                <a href="{{route('beneficiary.logs')}}" class="btn btn-sm btn-outline-secondary">
                     <i class="fas fa-book"></i> Logs
-                </button>
+                </a>
                 <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addBeneficiaryModal">
                     <i class="fas fa-plus"></i> Add Beneficiary
                 </button>

@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class LogController extends Controller
 {
+    public function index()
+    {
+        return view('page.beneficiary_logs');
+    }
+
     public function getBeneficiaryTableData()
     {
         try {

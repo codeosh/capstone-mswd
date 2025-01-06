@@ -48,4 +48,5 @@ Route::middleware(['role:personnel'])->group(function () {
     Route::get('/Sub-page/Beneficiary/Intake-Form', [CaseController::class, 'intakeform'])->name('intake.form');
     Route::get('/Sub-page/Beneficiary/Interview-Form', [CaseController::class, 'interviewform'])->name('interview.form');
     Route::get('/Page/Beneficiary/Generate-Reports', [GenerateReport::class, 'index'])->name('generate.report');
+    Route::get('/Page/Beneficiary/Logs', [LogController::class, 'index'])->name('beneficiary.logs');
 });

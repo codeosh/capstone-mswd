@@ -6,7 +6,6 @@ fetch('/getBeneficiaryTableData')
         const tableBody = document.getElementById('beneficiaryLogsTable');
 
         beneficiaries.forEach((beneficiary) => {
-            // Format the dates to "January 01, 2024, 12:00 AM"
             const dateAdded = new Date(beneficiary.date_added).toLocaleString(
                 'en-US',
                 {
