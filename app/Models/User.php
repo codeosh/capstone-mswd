@@ -51,6 +51,6 @@ class User extends Authenticatable
 
     public function announcements()
     {
-        return $this->hasMany(PostAnnouncement::class);
+        return $this->hasMany(AnnouncementPost::class);
     }
 }

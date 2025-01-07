@@ -67,13 +67,60 @@
 
         <!-- Announcement Page -->
         <div class="Announcement" id="Announcement">
-            <h1>Latest Announcements</h1>
+            <h1>Announcements</h1>
             <p>
                 Stay informed with the newest updates, programs, and activities from the
                 Municipal Social Welfare and Development Office!
             </p>
 
-            <div class="announcementContent"></div>
+            <div class="announcementContent">
+                @foreach($announcements as $announcement)
+                <!-- Announcement Card -->
+                <div class="card mb-3 mx-auto" style="max-width: 800px; height: 100%;">
+                    <div class="card-header d-flex align-items-center">
+                        <!-- Logo and Title -->
+                        <img src="{{ asset('images/logo/mswd-icon.png') }}" alt="Logo" class="img-fluid"
+                            style="max-width: 50px; height: auto; margin-right: 10px;">
+                        <div>
+                            <h5 class="m-0">Municipality Social Welfare Development</h5>
+                            <!-- Posted Date and Time -->
+                            <small class="text-muted">Posted on: {{
+                                \Carbon\Carbon::parse($announcement->created_at)->format('F j,
+                                Y, H:i') }}</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Caption -->
+                        <p class="card-text">{{ $announcement->caption }}</p>
+
+                        <!-- Media (Images/Videos) -->
+                        <div class="media-container">
+                            @php
+                            $mediaFiles = json_decode($announcement->media_file); // Decoding the JSON
+                            @endphp
+
+                            @foreach($mediaFiles as $media)
+                            @if (in_array(pathinfo($media, PATHINFO_EXTENSION), ['jpg', 'png']))
+                            <!-- Image -->
+                            <div class="media-item mb-3">
+                                <img src="{{ asset('storage/' . $media) }}" alt="Announcement Image" class="img-fluid">
+                            </div>
+                            @elseif (in_array(pathinfo($media, PATHINFO_EXTENSION), ['mp4']))
+                            <!-- Video -->
+                            <div class="media-item mb-3">
+                                <video controls class="img-fluid">
+                                    <source src="{{ asset('storage/' . $media) }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            @endif
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
         </div>
 
         <!-- About Page -->

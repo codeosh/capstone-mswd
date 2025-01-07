@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Page;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnnouncementPost;
 use App\Models\PostAnnouncement as ModelsPostAnnouncement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ class PostAnnouncement extends Controller
     {
         return view('page.post_announcement');
     }
+
 
     public function store(Request $request)
     {
@@ -31,7 +33,7 @@ class PostAnnouncement extends Controller
             }
         }
 
-        $postAnnouncement = ModelsPostAnnouncement::create([
+        $postAnnouncement = AnnouncementPost::create([
             'user_id' => Auth::id(),
             'caption' => $request->caption,
             'media_file' => json_encode($uploadedMedia),
