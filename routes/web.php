@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Log\LogController;
 use App\Http\Controllers\Page\BeneficiaryController;
+use App\Http\Controllers\Page\BeneficiarySite;
 use App\Http\Controllers\Page\CaseController;
 use App\Http\Controllers\Page\GenerateReport;
 use App\Http\Controllers\Page\PostAnnouncement;
@@ -51,4 +52,5 @@ Route::middleware(['role:personnel'])->group(function () {
     Route::get('/Page/Beneficiary/Generate-Reports', [GenerateReport::class, 'index'])->name('generate.report');
     Route::get('/Page/Beneficiary/Logs', [LogController::class, 'index'])->name('beneficiary.logs');
     Route::get('/Page/Beneficiary/Post-Announcement', [PostAnnouncement::class, 'index'])->name('post.announcement');
+    Route::get('/Beneficiary', [BeneficiarySite::class, 'index'])->name('beneficiary.site');
 });
