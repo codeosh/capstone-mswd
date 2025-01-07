@@ -48,6 +48,9 @@ Route::middleware(['role:admin,personnel'])->group(function () {
     Route::get('/Page/Beneficiary/CaseManagement', [CaseController::class, 'index'])->name('casemanage.page');
     Route::get('/Page/Beneficiary/Post-Announcement', [PostAnnouncement::class, 'index'])->name('post.announcement');
     Route::get('/Page/Beneficiary/Generate-Reports', [GenerateReport::class, 'index'])->name('generate.report');
+    Route::get('/Sub-page/Beneficiary/Intake-Form', [CaseController::class, 'intakeform'])->name('intake.form');
+    Route::get('/Sub-page/Beneficiary/Interview-Form', [CaseController::class, 'interviewform'])->name('interview.form');
+    Route::get('/Page/Beneficiary/Logs', [LogController::class, 'index'])->name('beneficiary.logs');
 });
 
 Route::middleware(['role:admin'])->group(function () {
@@ -58,7 +61,4 @@ Route::middleware(['role:admin'])->group(function () {
 Route::middleware(['role:personnel'])->group(function () {
     // Personnel-specific routes
     Route::get('/Dashboard/Personnel', [DashboardController::class, 'personnel_index'])->name('personnel.dashboard');
-    Route::get('/Sub-page/Beneficiary/Intake-Form', [CaseController::class, 'intakeform'])->name('intake.form');
-    Route::get('/Sub-page/Beneficiary/Interview-Form', [CaseController::class, 'interviewform'])->name('interview.form');
-    Route::get('/Page/Beneficiary/Logs', [LogController::class, 'index'])->name('beneficiary.logs');
 });
