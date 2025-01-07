@@ -1,0 +1,427 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Scroll Bar */
+body::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background-color: #333;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #00aaff;
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #0077cc;
+}
+
+header {
+    height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    background-image: url('/images/logo/sogod-municipality.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    z-index: 0;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+header nav {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+header .logoMSWD {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 10%;
+    font-size: 1rem;
+    height: 100%;
+    width: 20vh;
+}
+.logoMSWD img {
+    height: 70px;
+    width: 70px;
+    padding: 3px;
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+nav ul {
+    height: 100%;
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    list-style: none;
+    margin-left: 100vh;
+}
+
+ul li {
+    transition: transform 0.3s ease;
+    position: relative;
+    margin-top: 20px;
+}
+
+ul li:hover {
+    transform: scale(1.1);
+}
+
+ul li a {
+    color: white;
+    font-size: 1rem;
+    text-decoration: none;
+    white-space: nowrap;
+    margin: 0 10px;
+    position: relative;
+}
+
+ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background-color: blue;
+    transition: width 0.3s ease;
+}
+
+ul li a:hover::after {
+    width: 100%;
+}
+
+.bars {
+    display: none;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 20;
+}
+
+.heroPage {
+    height: 80vh;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 999;
+    overflow: hidden;
+}
+
+.heroPage h1 {
+    color: white;
+    font-family: 'Prompt', serif;
+    text-align: center;
+    font-weight: 600;
+    font-size: 5rem;
+}
+.heroPage p {
+    color: white;
+    margin-bottom: 50px;
+    font-weight: lighter;
+    z-index: 1;
+}
+.mswd-Images-container {
+    height: 50vh;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.mswd-images {
+    height: 85%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideImages 20s linear infinite;
+    transition: transform 0.3s ease;
+}
+
+.mswd-images img {
+    height: 100%;
+    width: 100%;
+    transition: all 0.3s ease;
+    filter: grayscale(100%) contrast(100%);
+}
+
+.mswd-images:hover {
+    animation-play-state: paused;
+}
+
+.mswd-images img:hover {
+    filter: none;
+    transform: scale(1.1);
+}
+
+@keyframes slideImages {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+/* Announcement */
+.Announcement {
+    height: 100vh;
+    width: 100%;
+    margin-top: 10vh;
+    position: relative;
+    padding: 0 10vh;
+    background-color: transparent;
+    z-index: -1;
+}
+.announcementContent {
+    height: 80vh;
+    width: 100%;
+    background: rgba(52, 52, 52, 0.5);
+    -webkit-backdrop-filter: blur(9px);
+    backdrop-filter: blur(9px);
+
+    border-radius: 10px;
+    box-shadow: 3.5px 5.5px 0 0 #474bff;
+}
+.aboutPage {
+    height: auto;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    z-index: -1;
+}
+.aboutPage h1 {
+    font-size: 2rem;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.aboutUsMainContainer {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px;
+    flex-wrap: wrap;
+    z-index: -1;
+}
+.leftContentAbout {
+    height: 500px;
+    width: 45%;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    background-color: gray;
+}
+.leftContentAbout img {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 8px;
+    box-shadow: 5px 11.5px 0 3px #dddddd;
+}
+.rightContentAbout {
+    height: auto;
+    width: 40%;
+    border-radius: 10px;
+    position: relative;
+
+    flex-wrap: wrap;
+}
+.rightContentAbout p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+}
+.Mission-Vision {
+    height: auto;
+    width: 100%;
+    padding: 25px;
+}
+
+.Mission-Vision-Container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    z-index: -1;
+}
+
+.MissionContainer,
+.VisionContainer,
+.GoalContainer {
+    height: 30vh;
+    width: 85%;
+    font-family: 'Prompt', serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.circleContainer {
+    height: 100%;
+    width: 23px;
+    position: relative;
+}
+
+.circle {
+    height: 20px;
+    width: 22px;
+    position: absolute;
+    top: 15%;
+    margin-right: 50px;
+    border-radius: 100%;
+    background-color: blue;
+}
+
+.MissionContent,
+.VisionContent,
+.GoalContent {
+    height: auto;
+    width: 100%;
+    padding: 20px;
+}
+
+.MissionContent p,
+.VisionContent p,
+.GoalContent p {
+    font-size: 1.3rem;
+}
+
+.Mission-Vision .line {
+    height: 207px;
+    width: 0;
+    border-left: 3px dashed grey;
+    position: absolute;
+    top: 12%;
+    left: 10%;
+}
+
+.Mission-Vision .line2 {
+    height: 207px;
+    width: 0;
+    border-left: 3px dashed grey;
+    position: absolute;
+    top: 43.5%;
+    left: 10%;
+}
+footer {
+    height: 30vh;
+    width: 100%;
+    background-color: #333;
+    padding: 20px 150px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+.footerlogoMSWD {
+    height: 100px;
+    width: 100px;
+    background-image: url('/images/logo/mswd-icon.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.footerContact {
+    height: 100%;
+    width: 40vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.footerContact h1 {
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: hsl(0, 0%, 90%);
+}
+.footerContact p {
+    color: hsl(0, 0%, 50%);
+}
+.SocialMediaContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 30px;
+}
+.fa-brands.fa-facebook,
+.fa-brands.fa-instagram,
+.fa-brands.fa-x-twitter {
+    font-size: 1.5rem;
+    color: hsl(0, 0%, 90%);
+}
+.fa-brands.fa-facebook:hover {
+    color: blue;
+    cursor: pointer;
+}
+.fa-brands.fa-instagram:hover {
+    background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.fa-brands.fa-x-twitter:hover {
+    color: black;
+}
+.footerCreator {
+    height: auto;
+    width: 40vh;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: column;
+}
+.footerCreator p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    color: hsl(0, 0%, 60%);
+    margin: 3px;
+}

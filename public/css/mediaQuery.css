@@ -1,0 +1,385 @@
+@media (max-width: 768px) {
+  .heroPage {
+    height: 70vh;
+  }
+
+  .heroPage h1 {
+    font-size: 3.5rem;
+  }
+
+  .heroPage p {
+    font-size: 0.7rem;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  nav ul {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 100%;
+    height: fit-content;
+    padding: 20px;
+    z-index: 1000;
+  }
+  nav ul li a {
+    color: #ffc145;
+    font-weight: bold;
+    z-index: 1;
+  }
+  nav ul.active {
+    display: flex;
+  }
+
+  .bars {
+    display: block;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    color: #5d80ff;
+    cursor: pointer;
+    z-index: 11;
+  }
+
+  header .logoMSWD {
+    left: 10px;
+    width: 50px;
+  }
+
+  .logoMSWD img {
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    top: 20px;
+    z-index: 1;
+  }
+  body::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: #00aaff;
+    border-radius: 8px;
+  }
+
+  body::-webkit-scrollbar-thumb:hover {
+    background-color: #0077cc;
+  }
+  .mswd-Images-container {
+    height: 40vh;
+  }
+
+  .mswd-images {
+    height: 100%;
+    animation: slideImages 15s linear infinite;
+    gap: 3px;
+  }
+
+  .mswd-images img {
+    width: 50%;
+    height: auto;
+  }
+
+  .rightContentAbout {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  .leftContentAbout {
+    height: 50%;
+    width: 100%;
+  }
+  .leftContentAbout img {
+    width: 100%;
+    height: 100%;
+  }
+  .rightContentAbout p {
+    text-align: justify;
+  }
+  .aboutUsMainContainer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .Mission-Vision-Container {
+    padding: 15px;
+  }
+
+  .MissionContainer,
+  .VisionContainer,
+  .GoalContainer {
+    height: auto;
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  .circle {
+    height: 18px;
+    width: 18px;
+    display: none;
+  }
+
+  .MissionContent p,
+  .VisionContent p,
+  .GoalContent p {
+    font-size: 1.1rem;
+  }
+
+  .Mission-Vision .line {
+    height: 324px;
+    left: 8%;
+    top: 7%;
+  }
+
+  .Mission-Vision .line2 {
+    height: 400px;
+    left: 8%;
+    top: 45%;
+  }
+  footer {
+    padding: 20px 50px;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .footerlogoMSWD {
+    height: 80px;
+    width: 80px;
+  }
+
+  .footerContact {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footerContact h1 {
+    font-size: 0.9rem;
+  }
+
+  .SocialMediaContainer {
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .fa-brands.fa-facebook,
+  .fa-brands.fa-instagram,
+  .fa-brands.fa-x-twitter {
+    font-size: 1.3rem;
+  }
+
+  .footerCreator {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    flex-direction: row;
+    gap: 30px;
+  }
+
+  .footerCreator p {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  nav ul {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 100%;
+    height: fit-content;
+    padding: 20px;
+    z-index: 1000;
+  }
+  nav ul li a {
+    color: #ffc145;
+    font-weight: bold;
+    z-index: 1;
+  }
+  nav ul.active {
+    display: flex;
+  }
+
+  .bars {
+    display: block;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    color: #5d80ff;
+    cursor: pointer;
+    z-index: 11;
+  }
+
+  header .logoMSWD {
+    left: 10px;
+    width: 50px;
+  }
+
+  .logoMSWD img {
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    top: 20px;
+    z-index: 1;
+  }
+  .heroPage {
+    height: 70vh;
+  }
+  .heroPage h1 {
+    font-size: 3rem;
+  }
+  .heroPage p {
+    font-size: 0.7rem;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  body::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: #00aaff;
+    border-radius: 6px;
+  }
+
+  body::-webkit-scrollbar-thumb:hover {
+    background-color: #0077cc;
+  }
+
+  .mswd-Images-container {
+    height: 20vh;
+  }
+
+  .mswd-images {
+    height: 100%;
+    animation: slideImages 15s linear infinite;
+    gap: 3px;
+  }
+
+  .mswd-images img {
+    width: 50%;
+    height: auto;
+  }
+  .Announcement {
+    padding: 10px;
+    margin-top: 3vh;
+  }
+
+  .aboutPage h1 {
+    font-size: 1.5rem;
+  }
+
+  .leftContentAbout {
+    height: 250px;
+    width: 90%;
+  }
+
+  .rightContentAbout {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+
+  .leftContentAbout img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .rightContentAbout p {
+    font-size: 0.9rem;
+    text-align: justify;
+  }
+  .aboutUsMainContainer {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  .MissionContainer,
+  .VisionContainer,
+  .GoalContainer {
+    height: auto;
+    width: 95%;
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  .circleContainer {
+    height: 100%;
+    width: 23px;
+  }
+
+  .circle {
+    height: 12px;
+    width: 12px;
+    top: 10%;
+  }
+
+  .MissionContent p,
+  .VisionContent p,
+  .GoalContent p {
+    font-size: 1rem;
+  }
+
+  .Mission-Vision .line {
+    height: 396px;
+    left: 8%;
+    top: 5%;
+  }
+
+  .Mission-Vision .line2 {
+    height: 675px;
+    left: 8%;
+    top: 38%;
+  }
+  footer {
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .footerlogoMSWD {
+    height: 60px;
+    width: 60px;
+  }
+
+  .footerContact {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .footerContact h1 {
+    font-size: 0.8rem;
+  }
+
+  .footerContact p {
+    font-size: 0.7rem;
+  }
+
+  .SocialMediaContainer {
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .fa-brands.fa-facebook,
+  .fa-brands.fa-instagram,
+  .fa-brands.fa-x-twitter {
+    font-size: 1.2rem;
+  }
+
+  .footerCreator {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .footerCreator p {
+    font-size: 0.6rem;
+  }
+}
