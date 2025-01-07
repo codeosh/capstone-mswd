@@ -73,22 +73,22 @@
 
             <div class="navbar-items p-2">
                 <small class="text-muted fw-semibold">Home</small>
+                @if (Auth::user()->role === 'admin')
+                <a href="{{route('admin.dashboard')}}" class="navbar-item" id="dashboardLink">
+                    <i class="fa-solid fa-desktop me-2"></i> <span class="navbar-text">Dashboard</span>
+                </a>
+                @endif
+
+                @if (Auth::user()->role === 'personnel')
                 <a href="{{route('personnel.dashboard')}}" class="navbar-item" id="dashboardLink">
                     <i class="fa-solid fa-desktop me-2"></i> <span class="navbar-text">Dashboard</span>
                 </a>
+                @endif
+
                 <small class="text-muted fw-semibold">Manage</small>
                 <a href="{{route('beneficiary.page')}}" class="navbar-item">
                     <i class="fa-solid fa-users-rectangle me-2"></i> <span class="navbar-text">Beneficiary</span>
                 </a>
-                {{-- <a href="#" class="navbar-item" id="dropdownToggle">
-                    <i class="fa-solid fa-hand-holding-hand me-2"></i>
-                    <span class="navbar-text">Services</span>
-                    <i class="fa-solid fa-chevron-down ms-3"></i>
-                </a>
-                <!-- Dropdown Menu -->
-                <div id="dropServices" class="drop-menu">
-                    <a href="#" class="drop-item">CAR/CICL</a>
-                </div> --}}
                 <a href="{{route('casemanage.page')}}" class="navbar-item">
                     <i class="fa-solid fa-scale-balanced"></i> <span class="navbar-text">Case Management</span>
                 </a>

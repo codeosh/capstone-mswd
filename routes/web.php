@@ -42,17 +42,23 @@ Route::post('/Beneficiary/Case-Management/Interview/store', [CaseController::cla
 Route::get('/generate-report/filter', [GenerateReport::class, 'filterReport'])->name('report.filter');
 
 
+Route::middleware(['role:admin,personnel'])->group(function () {
+    // Shared routes for admin and personnel
+    Route::get('/Page/Beneficiary', [BeneficiaryController::class, 'index'])->name('beneficiary.page');
+    Route::get('/Page/Beneficiary/CaseManagement', [CaseController::class, 'index'])->name('casemanage.page');
+    Route::get('/Page/Beneficiary/Post-Announcement', [PostAnnouncement::class, 'index'])->name('post.announcement');
+    Route::get('/Page/Beneficiary/Generate-Reports', [GenerateReport::class, 'index'])->name('generate.report');
+});
+
 Route::middleware(['role:admin'])->group(function () {
+    // Admin-specific routes
     Route::get('/Dashboard/Admin', [DashboardController::class, 'admin_index'])->name('admin.dashboard');
 });
 
 Route::middleware(['role:personnel'])->group(function () {
+    // Personnel-specific routes
     Route::get('/Dashboard/Personnel', [DashboardController::class, 'personnel_index'])->name('personnel.dashboard');
-    Route::get('/Page/Beneficiary', [BeneficiaryController::class, 'index'])->name('beneficiary.page');
-    Route::get('/Page/Beneficiary/CaseManagement', [CaseController::class, 'index'])->name('casemanage.page');
     Route::get('/Sub-page/Beneficiary/Intake-Form', [CaseController::class, 'intakeform'])->name('intake.form');
     Route::get('/Sub-page/Beneficiary/Interview-Form', [CaseController::class, 'interviewform'])->name('interview.form');
-    Route::get('/Page/Beneficiary/Generate-Reports', [GenerateReport::class, 'index'])->name('generate.report');
     Route::get('/Page/Beneficiary/Logs', [LogController::class, 'index'])->name('beneficiary.logs');
-    Route::get('/Page/Beneficiary/Post-Announcement', [PostAnnouncement::class, 'index'])->name('post.announcement');
 });
