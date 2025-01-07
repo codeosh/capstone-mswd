@@ -9,6 +9,7 @@ use App\Http\Controllers\Page\CaseController;
 use App\Http\Controllers\Page\GenerateReport;
 use App\Http\Controllers\Page\PostAnnouncement;
 use App\Http\Controllers\Page\ServiceController;
+use App\Http\Controllers\Page\UserAccountController;
 use Illuminate\Support\Facades\Route;
 
 // Login Routes
@@ -55,6 +56,7 @@ Route::middleware(['role:admin,personnel'])->group(function () {
 
 Route::middleware(['role:admin'])->group(function () {
     // Admin-specific routes
+    Route::get('/Admin/User-Accounts', [UserAccountController::class, 'index'])->name('user.account');
     Route::get('/Dashboard/Admin', [DashboardController::class, 'admin_index'])->name('admin.dashboard');
 });
 

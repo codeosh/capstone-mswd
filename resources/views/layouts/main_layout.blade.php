@@ -86,6 +86,11 @@
                 @endif
 
                 <small class="text-muted fw-semibold">Manage</small>
+                @if (Auth::user()->role === 'admin')
+                <a href="{{route('user.account')}}" class="navbar-item">
+                    <i class="fa-solid fa-user"></i> <span class="navbar-text">User Account</span>
+                </a>
+                @endif
                 <a href="{{route('beneficiary.page')}}" class="navbar-item">
                     <i class="fa-solid fa-users-rectangle me-2"></i> <span class="navbar-text">Beneficiary</span>
                 </a>
@@ -98,6 +103,7 @@
                 <a href="{{route('generate.report')}}" class="navbar-item">
                     <i class="fa-solid fa-chart-line me-2"></i> <span class="navbar-text">Reports</span>
                 </a>
+          
             </div>
         </div>
 
