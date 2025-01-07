@@ -61,11 +61,11 @@
 </div>
 <div class="card mt-3">
     <div class="card-body">
-        <div class="d-flex justify-content-end mb-3">
+        {{-- <div class="d-flex justify-content-end mb-3">
             <button class="btn btn-primary" id="generateReportBtn" style="box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);">
                 Generate Report
             </button>
-        </div>
+        </div> --}}
         <div class="row">
             <div class="col-md-6 p-2">
                 <div id="map" style="height: 520px; width: 100%;"></div>
