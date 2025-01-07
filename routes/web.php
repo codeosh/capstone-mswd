@@ -30,6 +30,9 @@ Route::get('/Beneficiaries/search', [BeneficiaryController::class, 'search'])->n
 Route::get('/getBarangayData', [DashboardController::class, 'getBarangayData']);
 Route::get('/getBeneficiaryTableData', [LogController::class, 'getBeneficiaryTableData']);
 
+// Beneficiary Site
+Route::get('/Beneficiary', [BeneficiarySite::class, 'index'])->name('beneficiary.site');
+
 
 // Case Management Routes
 Route::post('/Beneficiary/Case-Management/store', [CaseController::class, 'intakestore']);
@@ -52,5 +55,4 @@ Route::middleware(['role:personnel'])->group(function () {
     Route::get('/Page/Beneficiary/Generate-Reports', [GenerateReport::class, 'index'])->name('generate.report');
     Route::get('/Page/Beneficiary/Logs', [LogController::class, 'index'])->name('beneficiary.logs');
     Route::get('/Page/Beneficiary/Post-Announcement', [PostAnnouncement::class, 'index'])->name('post.announcement');
-    Route::get('/Beneficiary', [BeneficiarySite::class, 'index'])->name('beneficiary.site');
 });
