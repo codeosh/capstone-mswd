@@ -75,4 +75,45 @@ $(document).ready(function () {
             fileReader.readAsDataURL(file);
         });
     });
+
+    $('#postAnnouncementForm').on('submit', function (e) {
+        e.preventDefault();
+
+        let formData = new FormData();
+        formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+        formData.append('caption', $('#caption').val());
+
+        // Collect files from selectedFiles array
+        selectedFiles.forEach(function (file) {
+            formData.append('media[]', file);
+        });
+
+        console.log(selectedFiles);
+        $.ajax({
+            url: '/post-announcement',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                    $('#postAnnouncementForm')[0].reset();
+                    $('#mediaPreview').html('');
+                    selectedFiles = [];
+                } else {
+                    alert('Something went wrong!');
+                }
+            },
+            error: function (xhr) {
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    let errors = xhr.responseJSON.errors;
+                    let errorMessages = Object.values(errors).flat().join('\n');
+                    alert(errorMessages);
+                } else {
+                    alert('An error occurred while posting the announcement.');
+                }
+            },
+        });
+    });
 });

@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <label for="caption">Caption</label>
                     <textarea class="form-control" id="caption" name="caption" rows="3"
-                        placeholder="Write your announcement caption here..." required></textarea>
+                        placeholder="Write your announcement caption here..."></textarea>
                 </div>
                 <div class="form-group mt-3">
                     <label for="media">Upload Images/Videos</label>

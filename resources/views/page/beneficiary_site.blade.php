@@ -6,8 +6,8 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>MSWD</title>
-        <link rel="stylesheet" href="style.css" />
-        <link rel="stylesheet" href="mediaQuery.css" />
+        <link rel="stylesheet" href="{{asset('css/style.css')}}" />
+        <link rel="stylesheet" href="{{asset('css/mediaQuery.css')}}" />
         <!-- AOS CDN -->
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
         <!-- Boostrap CDN -->
@@ -25,7 +25,8 @@
         <header>
             <nav>
                 <div class="logoMSWD">
-                    <img data-aos="zoom-in-top" data-aos-duration="1500" src="picture/mswd-main-logo.png" alt="" />
+                    <img data-aos="zoom-in-top" data-aos-duration="1500" src="{{asset('images/logo/mswd-icon.png')}}"
+                        alt="" />
                 </div>
                 <ul data-aos="zoom-in-top" data-aos-duration="1500" id="nav-links">
                     <li><a href="#">Home</a></li>
@@ -50,17 +51,17 @@
         <!-- Animation Pictures -->
         <div class="mswd-Images-container">
             <div data-aos="zoom-out-up" data-aos-duration="2000" class="mswd-images">
-                <img src="picture/449062604_351686837959747_5326880362405773287_n.jpg" alt="" />
-                <img src="picture/380577901_177704378691328_1169502362393204834_n.jpg" alt="" />
-                <img src="picture/445228107_332922469836184_4027227873954373434_n.jpg" alt="" />
-                <img src="picture/445413016_332922549836176_4707185002489715847_n.jpg" alt="" />
-                <img src="picture/449062604_351686837959747_5326880362405773287_n.jpg" alt="" />
+                <img src="{{asset('images/images/pic01.jpg')}}" alt="" />
+                <img src="{{asset('images/images/pic02.jpg')}}" alt="" />
+                <img src="{{asset('images/images/pic03.jpg')}}" alt="" />
+                <img src="{{asset('images/images/pic04.jpg')}}" alt="" />
+                <img src="{{asset('images/images/pic05.jpg')}}" alt="" />
                 <!-- -->
-                <img src="picture/445228107_332922469836184_4027227873954373434_n.jpg" alt="" />
-                <img src="picture/449062604_351686837959747_5326880362405773287_n.jpg" alt="" />
-                <img src="picture/380577901_177704378691328_1169502362393204834_n.jpg" alt="" />
-                <img src="picture/445413016_332922549836176_4707185002489715847_n.jpg" alt="" />
-                <img src="picture/449062604_351686837959747_5326880362405773287_n.jpg" alt="" />
+                <img src="{{asset('images/images/pic01.jpg')}}" alt="" />
+                <img src="{{asset('images/images/pic02.jpg')}}" alt="" />
+                <img src="{{asset('images/images/pic03.jpg')}}" alt="" />
+                <img src="{{asset('images/images/pic04.jpg')}}" alt="" />
+                <img src="{{asset('images/images/pic05.jpg')}}" alt="" />
             </div>
         </div>
 
@@ -80,7 +81,7 @@
             <h1>About Us</h1>
             <div class="aboutUsMainContainer">
                 <div class="leftContentAbout">
-                    <img src="picture/445228107_332922469836184_4027227873954373434_n.jpg" alt="About Us MSWD" />
+                    <img src="{{asset('images/images/pic01.jpg')}}" alt="About Us MSWD" />
                 </div>
                 <div class="rightContentAbout">
                     <p>
@@ -182,6 +183,6 @@
     </script>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="script.js"></script>
+    <script src="{{asset('js/script.js')}}"></script>
 
 </html>

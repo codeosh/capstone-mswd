@@ -42,6 +42,9 @@ Route::post('/Beneficiary/Case-Management/Interview/store', [CaseController::cla
 // Generate Reports Routes
 Route::get('/generate-report/filter', [GenerateReport::class, 'filterReport'])->name('report.filter');
 
+// Announcement Routes
+Route::post('/post-announcement', [PostAnnouncement::class, 'store'])->name('announcement.store');
+
 
 Route::middleware(['role:admin,personnel'])->group(function () {
     // Shared routes for admin and personnel
