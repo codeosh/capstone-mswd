@@ -86,7 +86,7 @@
                             <!-- Posted Date and Time -->
                             <small class="text-muted">Posted on: {{
                                 \Carbon\Carbon::parse($announcement->created_at)->format('F j,
-                                Y, H:i') }}</small>
+                                Y, h:i A') }}</small>
                         </div>
                     </div>
                     <div class="card-body">
